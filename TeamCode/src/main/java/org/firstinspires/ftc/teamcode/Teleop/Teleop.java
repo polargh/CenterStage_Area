@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.sfdev.assembly.state.StateMachine;
-import com.sfdev.assembly.state.StateMachineBuilder;
+//import com.sfdev.assembly.state.StateMachine;
+//import com.sfdev.assembly.state.StateMachineBuilder;
 import org.firstinspires.ftc.teamcode.Subsystems.Robot;
 import org.firstinspires.ftc.teamcode.TeleControl.IntakeControl;
 import org.firstinspires.ftc.teamcode.TeleControl.OuttakeControl;
@@ -25,30 +25,30 @@ public class Teleop extends LinearOpMode {
         // setting everything to init
         robot.toInit();
 
-        StateMachine machine = new StateMachineBuilder()
-                .state(States.NEUTRAL)
-                .onEnter(() -> {
-                    // method calls
-                })
-                .onExit(() -> {
-                    // method calls
-
-                })
-                .transition(() -> gamepad2.x)
-
-
-                .build();
-
-        waitForStart();
-
-        machine.start();
+       // StateMachine machine = new StateMachineBuilder()
+//               // .state(States.NEUTRAL)
+//                .onEnter(() -> {
+//                    // method calls
+//                })
+//                .onExit(() -> {
+//                    // method calls
+//
+//                })
+//                .transition(() -> gamepad2.x)
+//
+//
+//                .build();
+//
+//        waitForStart();
+//
+//        machine.start();
 
         while (opModeIsActive()) {
 
 
 
             // updating state machine
-            machine.update();
+           // machine.update();
 
             // updating robot classes
             robot.update();
