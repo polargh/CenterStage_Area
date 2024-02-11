@@ -21,6 +21,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -99,10 +100,19 @@ public class SampleMecanumDrive extends MecanumDrive {
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
+
+
         leftFront = hardwareMap.get(DcMotorEx.class, "parallelEncoder");
         leftRear = hardwareMap.get(DcMotorEx.class, "perpendicularEncoder");
         rightRear = hardwareMap.get(DcMotorEx.class, "rb");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
+
+//        leftFront = hardwareMap.get(DcMotorEx.class, "parallelEncoder");
+//        leftRear = hardwareMap.get(DcMotorEx.class, "perpendicularEncoder");z
+//        rightRear = hardwareMap.get(DcMotorEx.class, "rb");
+//        rightFront = hardwareMap.get(DcMotorEx.class, "rf");
+
+
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
