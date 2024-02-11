@@ -13,7 +13,6 @@ public class Robot implements Subsystem {
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
         drivebase = new Drivebase(hardwareMap);
-
         systems = new Subsystem[]{outtake, intake, drivebase};
     }
 
