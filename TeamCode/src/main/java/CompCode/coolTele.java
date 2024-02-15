@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
         import Hardware.v2bot_map;
 
-@TeleOp(name="goofball tele")
+@TeleOp(name="center_tele")
 public class coolTele extends LinearOpMode {
 
 
@@ -21,6 +21,13 @@ public class coolTele extends LinearOpMode {
 
     double dropstack = 5;
     double stackpos = 0;
+
+    double FRONTGRAB = .27;
+    double REARGRAB = .4065;
+    double FRONTRELEASE = .472;
+    double REARRELEASE = .235;
+
+    double rotate_pos = 3;
     // used with the dump servo, this will get covered in a bit
     ElapsedTime toggleTimer = new ElapsedTime();
     //double toggleTime = .25;
@@ -107,6 +114,10 @@ public class coolTele extends LinearOpMode {
 //            robot.ldrop.setPosition(0.214);
 //            robot.rdrop.setPosition(0.175);
         robot.drop.setPosition(.5);
+        robot.frontclaw.setPosition(FRONTRELEASE);
+        robot.rearclaw.setPosition(REARRELEASE);
+        robot.rotwrist.setPosition(.49);
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -117,6 +128,9 @@ public class coolTele extends LinearOpMode {
 //        //LiftPos liftTarget = LiftPos.START;
 //        liftTarget = 0;
         while (opModeIsActive() && !isStopRequested()) {
+
+
+
 
 
             if (gamepad1.right_trigger > 0) { //out
@@ -155,19 +169,71 @@ public class coolTele extends LinearOpMode {
                 robot.drop.setPosition(.5);
 
             }
+            if (gamepad1.square) { //out
+                robot.drop.setPosition(.385);
+
+            }
+
+
             if (gamepad1.circle) { //out
                 robot.drop.setPosition(.485);
-
             }
             if (gamepad1.cross) { //out
                 robot.drop.setPosition(.47);
+            }
+            if (gamepad2.circle) { //grab rear
+                robot.rearclaw.setPosition(REARGRAB);
+            }
+            if (gamepad2.square) { //grab front
+                robot.frontclaw.setPosition(FRONTGRAB);
+            }
+            if (gamepad2.left_stick_button) { //release front
+                robot.frontclaw.setPosition(FRONTRELEASE);
+            }
+            if (gamepad2.right_stick_button) { //release rear
+                robot.rearclaw.setPosition(REARRELEASE);
+            }
+
+            if (gamepad2.right_bumper){
+                //toggle
+                if (rotate_pos<5) {
+                    rotate_pos++;
+                }
+
+            } else if (gamepad2.left_bumper){
+                //toggle L
+
+                if (rotate_pos >1) {
+                    rotate_pos--;
+                }
 
             }
-            if (gamepad1.square) { //out
-                robot.drop.setPosition(.46);
 
+                //start stack
+                if (rotate_pos == 1 ) {
+                    robot.rotwrist.setPosition(.547);
+                }
+                 if (rotate_pos == 2) {
+                    robot.rotwrist.setPosition(.53);
+                }
+                 if (rotate_pos == 3){
+                    robot.rotwrist.setPosition(.49);
+                }
+                 if (rotate_pos == 4){
+                    robot.rotwrist.setPosition(.45);
+                }
+                 if (rotate_pos == 5){
+                    robot.rotwrist.setPosition(.435);
+                }
+
+
+
+            if (gamepad1.left_bumper) {
+                SpeedAdjust = 4;
+            } else if (gamepad1.right_bumper) {
+                SpeedAdjust = 2.5;
             }
-            telemetry.addData("stack position", stackpos);
+
 
 
 
@@ -176,6 +242,18 @@ public class coolTele extends LinearOpMode {
             robot.leftBack.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x) / SpeedAdjust);
             robot.rightBack.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) / SpeedAdjust);
 
+              if (gamepad2.right_trigger > 0) {
+                    robot.climb.setPower(2);
+
+                }else if (gamepad2.left_trigger > 0) {
+                    robot.climb.setPower(-2);
+                }else {
+                    robot.climb.setPower(0);
+                }
+
+
+               telemetry.addData("rotate#:",rotate_pos);
+              telemetry.update();
         }
     }
 }
