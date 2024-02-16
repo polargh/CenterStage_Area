@@ -78,8 +78,8 @@ public class v2bot_map {
 
     public Servo rotwrist;
     public Servo bendwrist;
-    public Servo rightaxon;
-    public Servo leftaxon;
+    //public Servo rightaxon;
+   // public Servo leftaxon;
 
     //    public Servo ldrop;
     public WebcamName webcam;
@@ -113,8 +113,8 @@ public class v2bot_map {
         frontclaw = hwMap.get(Servo.class, "frontclaw");
         bendwrist = hwMap.get(Servo.class, "bendwrist");
         rotwrist = hwMap.get(Servo.class, "spinwrist");
-        leftaxon = hwMap.get(Servo.class, "laxon");
-        rightaxon = hwMap.get(Servo.class, "raxon");
+        laxon = hwMap.get(Servo.class, "laxon");
+        raxon = hwMap.get(Servo.class, "raxon");
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");
 
             //ARM STUFF !!1! idk how the motors are labeled yet <//3

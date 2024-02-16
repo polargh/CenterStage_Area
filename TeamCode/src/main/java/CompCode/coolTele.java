@@ -19,17 +19,20 @@ public class coolTele extends LinearOpMode {
     //TELEmap robot   = new TELEmap();
     v2bot_map robot = new v2bot_map();
 
+    ElapsedTime toggleTimer = new ElapsedTime();
+    double toggleTime = .25;
+
     double dropstack = 5;
     double stackpos = 0;
 
-    double FRONTGRAB = .27;
-    double REARGRAB = .4065;
+    double FRONTGRAB = .2729;
+    double REARGRAB = .413;
     double FRONTRELEASE = .472;
     double REARRELEASE = .235;
 
     double rotate_pos = 3;
     // used with the dump servo, this will get covered in a bit
-    ElapsedTime toggleTimer = new ElapsedTime();
+//    ElapsedTime toggleTimer = new ElapsedTime();
     //double toggleTime = .25;
 
 
@@ -69,14 +72,25 @@ public class coolTele extends LinearOpMode {
 ////    int MANUAL = larm.getCurrentPosition() +20;
 //
 //    //private MultipleTelemetry tl;
-//    double waitTime1 = .5;
-//    double waitTime2 = 0;
-//    double waitTime3 = 1.05;
-//
-//    ElapsedTime waitTimer1 = new ElapsedTime();
-//    ElapsedTime waitTimer2 = new ElapsedTime();
-//    ElapsedTime waitTimer3 = new ElapsedTime();
-//    ElapsedTime runtime = new ElapsedTime();
+
+    double intakepos = 0;
+    double waitTime1 = .5;
+    double waitTime2 = 0.15;
+    double waitTime3 = 1.05;
+    double waitTime4 = .65;
+    double waitTime6 = .45;
+    double waitTime7 = .9;
+
+    ElapsedTime waitTimer1 = new ElapsedTime();
+    ElapsedTime waitTimer2 = new ElapsedTime();
+    ElapsedTime waitTimer3 = new ElapsedTime();
+    ElapsedTime waitTimer4 = new ElapsedTime();
+
+    ElapsedTime waitTimer6 = new ElapsedTime();
+
+    ElapsedTime waitTimer7 = new ElapsedTime();
+
+    ElapsedTime runtime = new ElapsedTime();
 //
 
     double SpeedAdjust = 1;
@@ -86,19 +100,29 @@ public class coolTele extends LinearOpMode {
 //    double lDropPos = 0;
 //    double rDropPos = 0;
 
-//    enum elbowDownState { //INTAKE
-//        START,
-//        INTAKE,
-//        WRIST
-//
-//    }
-//
-//    enum elbowUpState { //OUTTAKE
-//        START,
-//        OUTTAKE,
-//
-//
-//    }
+    enum elbowDownState { //INTAKE
+        START,
+        INTAKE,
+        WRIST
+
+    }
+    enum grab { //INTAKE
+        START,
+        DOWN,
+        PICKPIXELS,
+        UP
+
+
+    }
+
+
+    enum elbowUpState { //OUTTAKE
+        START,
+        OUTTAKE,
+        WRIST
+
+
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -106,30 +130,127 @@ public class coolTele extends LinearOpMode {
         robot.init(hardwareMap);
         // Lift lift = new Lift(hardwareMap, telemetry);
 
-//        robot.wrist.setPosition(0.999);
-//
-//        robot.raxon.setPosition(.87);
-//        robot.laxon.setPosition(.12);
-//        robot.drone.setPosition(.5);
-//            robot.ldrop.setPosition(0.214);
-//            robot.rdrop.setPosition(0.175);
+
         robot.drop.setPosition(.5);
         robot.frontclaw.setPosition(FRONTRELEASE);
         robot.rearclaw.setPosition(REARRELEASE);
         robot.rotwrist.setPosition(.49);
+        robot.raxon.setPosition(.55);
+        robot.laxon.setPosition(.45);
+        robot.bendwrist.setPosition(.12);
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-//        elbowUpState outtake = elbowUpState.START;
-//        elbowDownState intake = elbowDownState.START;
+        elbowUpState outtake = elbowUpState.START;
+        elbowDownState intake = elbowDownState.START;
+        grab claw = grab.START;
 //
 //        //LiftPos liftTarget = LiftPos.START;
 //        liftTarget = 0;
         while (opModeIsActive() && !isStopRequested()) {
 
+            switch (outtake) { // scoring pos
+                case START:
+                    if (gamepad2.dpad_down || gamepad2.dpad_left || gamepad2.dpad_right || gamepad2.dpad_up) {
+                       intakepos = 1;
+                        robot.bendwrist.setPosition(.105);
+                        waitTimer1.reset();
+                        outtake = elbowUpState.OUTTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case OUTTAKE:
+                    if(waitTimer1.seconds() >= waitTime1) {
+                        intakepos = 1;
+                        robot.raxon.setPosition(.21);
+                        robot.laxon.setPosition(.79);
+                        waitTimer1.reset();
+                        outtake = elbowUpState.WRIST;
+                    }
+                    break;
+                case WRIST:
+                    if(waitTimer4.seconds() >= waitTime4) {
 
+                        rotate_pos = 4;
+                        robot.bendwrist.setPosition(.677);
+
+
+
+                        intakepos = 0;
+
+                        waitTimer4.reset();
+                        outtake = elbowUpState.START;
+                    }
+                    break;
+
+            }
+
+            switch (intake) { // start pos
+                case START:
+                    if (gamepad2.cross) {
+                        rotate_pos = 3;
+                        robot.bendwrist.setPosition(.12);
+                        robot.frontclaw.setPosition(FRONTRELEASE);
+                        robot.rearclaw.setPosition(REARRELEASE);
+                        waitTimer2.reset();
+                        intake = elbowDownState.INTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case INTAKE:
+                    if(waitTimer2.seconds() >= waitTime2) {
+                        robot.raxon.setPosition(.55);
+                        robot.laxon.setPosition(.45);
+                        intakepos = 0;
+
+                        waitTimer3.reset();
+                        intake = elbowDownState.START;
+                    }
+                    break;
+
+
+            }
+
+            switch (claw) { //grab from transfer
+                case START:
+                    if (gamepad2.triangle) {
+                        robot.frontclaw.setPosition(FRONTRELEASE);
+                        robot.rearclaw.setPosition(REARRELEASE);
+
+
+                        waitTimer6.reset();
+                        claw = grab.DOWN; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case DOWN:
+                    if(waitTimer6.seconds() >= waitTime6) {
+                        robot.raxon.setPosition(.835);
+                        robot.laxon.setPosition(.165);
+                        robot.bendwrist.setPosition(.12);
+
+                        waitTimer6.reset();
+                        claw = grab.PICKPIXELS;
+                    }
+                    break;
+                case PICKPIXELS:
+                    if(waitTimer6.seconds() >= waitTime6) {
+                        robot.frontclaw.setPosition(FRONTGRAB);
+                        robot.rearclaw.setPosition(REARGRAB);
+
+                        waitTimer7.reset();
+                        claw = grab.UP;
+                    }
+                    break;
+                case UP:
+                    if(waitTimer7.seconds() >= waitTime7) {
+                        robot.raxon.setPosition(.54);
+                        robot.laxon.setPosition(.46);
+                        robot.bendwrist.setPosition(.13);
+                        claw = grab.START;
+                    }
+                    break;
+
+            }
 
 
 
@@ -138,31 +259,45 @@ public class coolTele extends LinearOpMode {
 
             } else if (gamepad1.left_trigger > 0) { //in
                 //servospeed = 0.5;
-                robot.drop.setPosition(.465);
+                intakepos = 1;
                 robot.intake.setPower(3);
 
 
             }else if (gamepad1.left_bumper) {
+
             }else {
+
                 robot.intake.setPower(0);
                 //robot.wheel.setPower(0);
-                robot.drop.setPosition(.5);
+               // intakepos = 0;
             }
 
             if (gamepad1.right_bumper) { //out
-                robot.drop.setPosition(.465);
+                intakepos = 1;
                 robot.intake.setPower(3);
             } else if (gamepad1.left_trigger > 0) { //in
                 //servospeed = 0.5;
-                robot.drop.setPosition(.465);
+                intakepos = 1;
                 robot.intake.setPower(3);
 
 
-            } else {
+
+
+            } else if (gamepad1.right_trigger > 0) { //out
+                robot.intake.setPower(-3);
+            }else  { //in
+                //servospeed = 0.5;
+               // intakepos = 0;
                 robot.intake.setPower(0);
-                //robot.wheel.setPower(0);
-                robot.drop.setPosition(.5);
+
+
             }
+
+//            else {
+//                robot.intake.setPower(0);
+//                //robot.wheel.setPower(0);
+//               // intakepos = 0;
+//            }
 
 
             if (gamepad1.triangle) { //out
@@ -197,32 +332,50 @@ public class coolTele extends LinearOpMode {
             if (gamepad2.right_bumper){
                 //toggle
                 if (rotate_pos<5) {
+                    toggleTimer.reset();
                     rotate_pos++;
+                }
+                while (opModeIsActive()
+                        && (toggleTimer.seconds() < toggleTime)
+                ) {
+
                 }
 
             } else if (gamepad2.left_bumper){
                 //toggle L
 
                 if (rotate_pos >1) {
+                    toggleTimer.reset();
                     rotate_pos--;
+                }
+                while (opModeIsActive()
+                        && (toggleTimer.seconds() < toggleTime)
+                ) {
+
                 }
 
             }
 
+            if (intakepos == 1 ) {
+                robot.drop.setPosition(.4655);
+            }
+            if (intakepos == 0) {
+                robot.drop.setPosition(.5);
+            }
                 //start stack
-                if (rotate_pos == 1 ) {
+               if (rotate_pos == 1 ) {
                     robot.rotwrist.setPosition(.547);
                 }
                  if (rotate_pos == 2) {
                     robot.rotwrist.setPosition(.53);
                 }
-                 if (rotate_pos == 3){
+                if (rotate_pos == 3){
                     robot.rotwrist.setPosition(.49);
                 }
                  if (rotate_pos == 4){
-                    robot.rotwrist.setPosition(.45);
+                    robot.rotwrist.setPosition(.4655);
                 }
-                 if (rotate_pos == 5){
+                if (rotate_pos == 5){
                     robot.rotwrist.setPosition(.435);
                 }
 
@@ -234,7 +387,25 @@ public class coolTele extends LinearOpMode {
                 SpeedAdjust = 2.5;
             }
 
+//            if (gamepad2.square) {
+//                robot.raxon.setPosition(0.11); //outake
+//                robot.laxon.setPosition(0.89);
+//
+//            }
+//            if (gamepad2.circle) {
+//                robot.raxon.setPosition(0.89); // intake
+//                robot.laxon.setPosition(0.11);
+//            }
 
+            if (gamepad1.dpad_down) {
+                robot.bendwrist.setPosition(0.11);
+
+
+            }
+            if (gamepad1.dpad_up) {
+                robot.bendwrist.setPosition(0.89);
+
+            }
 
 
             robot.leftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x) / SpeedAdjust);
