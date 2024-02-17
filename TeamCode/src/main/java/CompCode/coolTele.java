@@ -79,7 +79,7 @@ public class coolTele extends LinearOpMode {
     double waitTime3 = 1.05;
     double waitTime4 = .65;
     double waitTime6 = .45;
-    double waitTime7 = .9;
+    double waitTime7 = .45;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
     ElapsedTime waitTimer2 = new ElapsedTime();
@@ -102,6 +102,7 @@ public class coolTele extends LinearOpMode {
 
     enum elbowDownState { //INTAKE
         START,
+        MID,
         INTAKE,
         WRIST
 
@@ -135,9 +136,9 @@ public class coolTele extends LinearOpMode {
         robot.frontclaw.setPosition(FRONTRELEASE);
         robot.rearclaw.setPosition(REARRELEASE);
         robot.rotwrist.setPosition(.49);
-        robot.raxon.setPosition(.55);
-        robot.laxon.setPosition(.45);
-        robot.bendwrist.setPosition(.12);
+        robot.raxon.setPosition(.785);
+        robot.laxon.setPosition(.215);
+        robot.bendwrist.setPosition(.16);
 
         waitForStart();
 
@@ -163,8 +164,10 @@ public class coolTele extends LinearOpMode {
                 case OUTTAKE:
                     if(waitTimer1.seconds() >= waitTime1) {
                         intakepos = 1;
-                        robot.raxon.setPosition(.21);
-                        robot.laxon.setPosition(.79);
+                        robot.raxon.setPosition(.5);
+                        robot.laxon.setPosition(.5);
+//                        robot.raxon.setPosition(.08);
+//                        robot.laxon.setPosition(.92);
                         waitTimer1.reset();
                         outtake = elbowUpState.WRIST;
                     }
@@ -190,20 +193,32 @@ public class coolTele extends LinearOpMode {
                 case START:
                     if (gamepad2.cross) {
                         rotate_pos = 3;
-                        robot.bendwrist.setPosition(.12);
+                        robot.bendwrist.setPosition(.16);
                         robot.frontclaw.setPosition(FRONTRELEASE);
                         robot.rearclaw.setPosition(REARRELEASE);
+                        intakepos = 1;
                         waitTimer2.reset();
-                        intake = elbowDownState.INTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                        intake = elbowDownState.MID; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
                     }
                     break;
-                case INTAKE:
+                case MID:
                     if(waitTimer2.seconds() >= waitTime2) {
-                        robot.raxon.setPosition(.55);
-                        robot.laxon.setPosition(.45);
+                        robot.raxon.setPosition(.7);
+                        robot.laxon.setPosition(.3);
+//                        robot.raxon.setPosition(.3);
+//                        robot.laxon.setPosition(.7);
+
+
+                        waitTimer6.reset();
+                        intake = elbowDownState.INTAKE;
+                    }
+                    break;
+                    case INTAKE:
+                    if(waitTimer6.seconds() >= waitTime6) {
+                        robot.raxon.setPosition(.785);
+                        robot.laxon.setPosition(.215);
                         intakepos = 0;
 
-                        waitTimer3.reset();
                         intake = elbowDownState.START;
                     }
                     break;
@@ -224,9 +239,9 @@ public class coolTele extends LinearOpMode {
                     break;
                 case DOWN:
                     if(waitTimer6.seconds() >= waitTime6) {
-                        robot.raxon.setPosition(.835);
-                        robot.laxon.setPosition(.165);
-                        robot.bendwrist.setPosition(.12);
+                        robot.raxon.setPosition(.96);
+                        robot.laxon.setPosition(.04);
+                        robot.bendwrist.setPosition(.172);
 
                         waitTimer6.reset();
                         claw = grab.PICKPIXELS;
@@ -243,9 +258,9 @@ public class coolTele extends LinearOpMode {
                     break;
                 case UP:
                     if(waitTimer7.seconds() >= waitTime7) {
-                        robot.raxon.setPosition(.54);
-                        robot.laxon.setPosition(.46);
-                        robot.bendwrist.setPosition(.13);
+                        robot.raxon.setPosition(.785);
+                        robot.laxon.setPosition(.215);
+                        robot.bendwrist.setPosition(.16);
                         claw = grab.START;
                     }
                     break;
