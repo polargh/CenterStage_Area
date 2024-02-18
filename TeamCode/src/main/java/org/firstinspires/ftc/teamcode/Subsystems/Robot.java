@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import Hardware.Intake;
+
 public class Robot implements Subsystem {
 
     public Outtake outtake;

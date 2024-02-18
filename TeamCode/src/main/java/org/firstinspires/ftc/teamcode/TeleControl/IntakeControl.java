@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleControl;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import Hardware.Intake;
 
 public class IntakeControl implements Control{
     Intake intake;

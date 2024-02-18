@@ -1,13 +1,15 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package Hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Subsystem;
+
 public class Intake implements Subsystem {
 
-    Servo claw;
+    Servo drop;
     public Intake(HardwareMap map) {
-        claw = map.get(Servo.class, "claw");
+        drop = map.get(Servo.class, "drop");
     }
 
     @Override

@@ -108,24 +108,15 @@ public class v2bot_map {
         rightFront = hwMap.get(DcMotorEx.class, "rf");
         //drone = hwMap.get(Servo.class, "release");
         climb = hwMap.get(DcMotor.class, "climb");
-        intake = hwMap.get(DcMotor.class, "intake");
-        rearclaw = hwMap.get(Servo.class, "rearclaw");
-        frontclaw = hwMap.get(Servo.class, "frontclaw");
+        intake = hwMap.get(DcMotor.class, "intake"); //intake spin
+        drop = hwMap.get(Servo.class, "drop"); //intake move up and down
+        rearclaw = hwMap.get(Servo.class, "rearclaw"); //tiny claw 1
+        frontclaw = hwMap.get(Servo.class, "frontclaw"); //tiny claw 2
         bendwrist = hwMap.get(Servo.class, "bendwrist");
         rotwrist = hwMap.get(Servo.class, "spinwrist");
         laxon = hwMap.get(Servo.class, "laxon");
         raxon = hwMap.get(Servo.class, "raxon");
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");
-
-            //ARM STUFF !!1! idk how the motors are labeled yet <//3
-       /* mic1 = hwMap.get(Servo.class, "");
-        mic1 = hwMap.get(Servo.class, "");
-        wrTurn = hwMap.get(Servo.class, "");
-        wrBend = hwMap.get(Servo.class, "");
-        elbow = hwMap.get(Servo.class, ""); */
-//        drone = hwMap.get(Servo.class, "drone");
-        drop = hwMap.get(Servo.class, "drop"); //????
-
 
 //        raxon = hwMap.get(Servo.class, "raxon");
 //        laxon = hwMap.get(Servo.class, "laxon");
