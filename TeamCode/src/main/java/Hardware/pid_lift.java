@@ -13,19 +13,19 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
 @TeleOp
-@Disabled
+
 public class pid_lift extends OpMode {
     private PIDController controller;
     public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
-    public static double f = .002;  // prevents arm from falling from gravity
+    public static double f = .0008;  // prevents arm from falling from gravity
 
 
     public static int LiftTarget = 0; // target position
 
     //public static int START_POS = 230;
-    public static int LOW = 2100; //1208 = LOW
-    public static int MID = 2530;
-    public static int HIGH = 180;
+    public static int LOW = 200; //1208 = LOW
+    public static int MID = 1300;
+    public static int HIGH = 2100;
     //2078 = MID
     // public static int HIGH = 500; //2900 = HIGH
     private DcMotorEx llift;

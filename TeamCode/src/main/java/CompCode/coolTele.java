@@ -2,12 +2,23 @@ package CompCode;
 
 
 //import com.arcrobotics.ftclib.controller.PIDController;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 //import com.arcrobotics.ftclib.controller.PIDController;
 
-        import Hardware.v2bot_map;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import Hardware.v2bot_map;
+
+
+import com.arcrobotics.ftclib.controller.PIDController;
 
 @TeleOp(name="center_tele")
 public class coolTele extends LinearOpMode {
@@ -20,7 +31,12 @@ public class coolTele extends LinearOpMode {
     v2bot_map robot = new v2bot_map();
 
     ElapsedTime toggleTimer = new ElapsedTime();
+    public PIDController controller;
+    public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
+    public static double f = 0.0007;
     double toggleTime = .25;
+    public DcMotorEx larm;
+    public DcMotorEx rarm;
 
     double dropstack = 5;
     double stackpos = 0;
@@ -80,6 +96,7 @@ public class coolTele extends LinearOpMode {
     double waitTime4 = .65;
     double waitTime6 = .45;
     double waitTime7 = .45;
+    private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
     ElapsedTime waitTimer2 = new ElapsedTime();
@@ -94,6 +111,7 @@ public class coolTele extends LinearOpMode {
 //
 
     double SpeedAdjust = 1;
+    public static int liftTarget = 0;
 
 //    double servospeed = 0.5;
 //
@@ -441,5 +459,104 @@ public class coolTele extends LinearOpMode {
                telemetry.addData("rotate#:",rotate_pos);
               telemetry.update();
         }
+    }
+    class Lift {
+        public Lift(HardwareMap hardwareMap, Telemetry telemetry) {
+            // Beep boop this is the the constructor for the lift
+            // Assume this sets up the lift hardware
+
+            controller = new PIDController(p, i, d);
+            tl = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+            larm = hardwareMap.get(DcMotorEx.class, "Llift");
+            rarm = hardwareMap.get(DcMotorEx.class, "Rlift");
+
+
+            larm.setDirection(DcMotorEx.Direction.FORWARD);
+            rarm.setDirection(DcMotorEx.Direction.REVERSE);
+
+            larm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rarm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            larm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rarm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        public void update() {
+//                setTarget(target);
+            // Beep boop this is the lift update function
+            // Assume this runs some PID controller for the lift
+
+
+            controller.setPID(p, i, d);
+
+            int larmPos = larm.getCurrentPosition();
+            int rarmPos = rarm.getCurrentPosition();
+
+            double Lpid = controller.calculate(larmPos, liftTarget);
+            double Rpid = controller.calculate(rarmPos, liftTarget);
+
+            // double Lff = Math.cos(Math.toRadians(LiftTarget / ticks_in_degree)) * f; //* (12/voltageSensor.getVoltage()
+            // double Rff = Math.cos(Math.toRadians(LiftTarget / ticks_in_degree)) * f; // * (12/voltageSensor.getVoltage()
+
+            double Lpower = Lpid + f;
+            double Rpower = Rpid + f;
+
+            larm.setPower(Lpower);
+            rarm.setPower(Rpower);
+
+
+            tl.update();
+        }
+
+        public boolean atTarget() {
+            return controller.atSetPoint();
+        }
+
+//            public void moveToTarget(LiftPos target) {
+//
+//                setTarget(target);
+//
+//                while (!atTarget()) {
+//                    update(target);
+//
+//                }
+//            }
+
+//            public void setTarget(LiftPos target) {
+//                int encoderTarget = 0;
+//                // Beep boop this is the lift update function
+//                // Assume this runs some PID controller for the lift
+//                switch (target) {
+//                    //int MANUAL = larm.getCurrentPosition() +20;
+//
+//                    case START:
+//                        encoderTarget = START_POS;
+//                        break;
+//                    case LOW:
+//                        encoderTarget = LOW_POS;
+//                        break;
+//
+//                    case MID:
+//                        encoderTarget = MID_POS;
+//                        break;
+//                    case MIDHIGH:
+//                        encoderTarget = MID_HIGH_POS;
+//                        break;
+//                    case HIGH:
+//                        encoderTarget = HIGH_POS;
+//                        break;
+//
+//                    case LOW_AUTO:
+//                        encoderTarget = LOW_AUTO;
+//                        break;
+//                    case MANUAL:
+//                        encoderTarget = larm.getCurrentPosition() + 20;
+//                        break;
+//                }
+
+//                controller.setSetPoint(encoderTarget);
+//            }
+
     }
 }

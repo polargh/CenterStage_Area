@@ -116,6 +116,7 @@ public class v2bot_map {
         rotwrist = hwMap.get(Servo.class, "spinwrist");
         laxon = hwMap.get(Servo.class, "laxon");
         raxon = hwMap.get(Servo.class, "raxon");
+
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");
 
 //        raxon = hwMap.get(Servo.class, "raxon");
