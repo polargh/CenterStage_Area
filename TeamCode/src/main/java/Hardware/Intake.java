@@ -26,15 +26,23 @@ public class Intake {
 
 
     public void intake(double sec) {
-        drop.setPosition(.4777);
+        drop.setPosition(.48285);
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
-        intake.setPower(2.5);
+        intake.setPower(1.9);
     }
         drop.setPosition(.5);
        intake.setPower(0);
         runtime.reset();
+    }
+    public void intakewhile() {
+        drop.setPosition(.482);
+            intake.setPower(1.9);
+    }
+    public void stopintake() {
+        drop.setPosition(.48285);
+        intake.setPower(0);
     }
 
 
@@ -48,6 +56,11 @@ public class Intake {
         intake.setPower(0);
         runtime.reset();
     }
+
+    public void score() {
+       drop.setPosition(.466);
+    }
+
 
     }
 

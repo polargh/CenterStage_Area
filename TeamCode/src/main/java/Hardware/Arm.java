@@ -66,17 +66,28 @@ public class Arm {
 
     public void intakePos(){
         raxon.setPosition(.658);
-        laxon.setPosition(.352);
-        bendwrist.setPosition(.149);
+        laxon.setPosition(.342);
+        bendwrist.setPosition(.158);
         rotwrist.setPosition(.497);
         rearclaw.setPosition(REARRELEASE);
         frontclaw.setPosition(FRONTRELEASE);
+        drop.setPosition(.5);
+    }
+    public void intakePosafterscore(){
+        raxon.setPosition(.658);
+        laxon.setPosition(.342);
+        bendwrist.setPosition(.158);
+        rotwrist.setPosition(.497);
+        rearclaw.setPosition(REARRELEASE);
+        frontclaw.setPosition(FRONTRELEASE);
+        drop.setPosition(.4825);
     }
     public void downpixel(){ //almost grab
         rotwrist.setPosition(.497);
-        raxon.setPosition(.798);
-        laxon.setPosition(.202);
-        bendwrist.setPosition(.1538);
+        raxon.setPosition(.821);
+        laxon.setPosition(.179);
+        bendwrist.setPosition(.1528);
+        drop.setPosition(.466);
 
     }
     public void grab(){ //almost grab
@@ -87,6 +98,18 @@ public class Arm {
         raxon.setPosition(.64);
         laxon.setPosition(.36);
         bendwrist.setPosition(.149);
+        drop.setPosition(.466);
+    }
+    public void out(){ //almost grab
+        drop.setPosition(.466);
+        raxon.setPosition(.295);
+        laxon.setPosition(.705);
+        bendwrist.setPosition(.6835);
+        rotwrist.setPosition(.4);
+    }
+    public void drop(){ //almost grab
+       frontclaw.setPosition(FRONTRELEASE);
+       rearclaw.setPosition(REARRELEASE);
     }
 
 //    ElapsedTime runtime = new ElapsedTime();
