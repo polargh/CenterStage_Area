@@ -32,6 +32,7 @@ package Hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -64,7 +65,7 @@ public class v2bot_map {
 
     public DcMotor climb;
 
-    public DcMotor intake;
+    public DcMotorEx intake;
     public Servo drone;
     public Servo wheel;
     public Servo raxon;
@@ -108,7 +109,7 @@ public class v2bot_map {
         rightFront = hwMap.get(DcMotorEx.class, "rf");
         //drone = hwMap.get(Servo.class, "release");
         climb = hwMap.get(DcMotor.class, "climb");
-        intake = hwMap.get(DcMotor.class, "intake"); //intake spin
+        intake = hwMap.get(DcMotorEx.class, "intake"); //intake spin
         drop = hwMap.get(Servo.class, "drop"); //intake move up and down
         rearclaw = hwMap.get(Servo.class, "rearclaw"); //tiny claw 1
         frontclaw = hwMap.get(Servo.class, "frontclaw"); //tiny claw 2
@@ -131,7 +132,7 @@ public class v2bot_map {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
         intake.setDirection(DcMotor.Direction.FORWARD);
-        climb.setDirection(DcMotor.Direction.FORWARD);
+        climb.setDirection(DcMotor.Direction.REVERSE);
 //
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

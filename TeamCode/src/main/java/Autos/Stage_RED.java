@@ -13,6 +13,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import Hardware.Arm;
+import Hardware.Intake;
 import Hardware.Lift;
 import Hardware.redAudiencePipeline;
 
@@ -22,12 +23,15 @@ import Hardware.redAudiencePipeline;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Red_STACK", group="Auto")
+@Autonomous(name="Red_AUD_2+3_TRUSS", group="Auto")
 public class Stage_RED extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;
     Lift lift;
     Arm arm;
+
+    Intake intake;
+    //Arm arm;
     public enum START_POSITION{
         BLUE_LEFT,
         BLUE_RIGHT,
@@ -40,6 +44,8 @@ public class Stage_RED extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         lift = new Lift(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
+
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
@@ -61,20 +67,24 @@ public class Stage_RED extends LinearOpMode {
                                      }
 
         );
+        arm.intakePos();
 
         Pose2d startPose = new Pose2d(-40, -63.42, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
+       // Pose2d rightintakepos = new Pose2d(-40, -63.42, Math.toRadians(-165));
+
+
         Trajectory left = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-46.35, -43.81), Math.toRadians(90))
+                .splineTo(new Vector2d(-45, -43.81), Math.toRadians(90))
                 .build();
 
         Trajectory middle = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-37.5, -39.31), Math.toRadians(90))
+                .splineTo(new Vector2d(-37.5, -36.5), Math.toRadians(90))
                 .build();
 
 
         Trajectory right = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-31.25, -41.77), Math.toRadians(40.00))
+                .splineTo(new Vector2d(-31.5, -39.5), Math.toRadians(50.00))
                 .build();
 
 
@@ -82,11 +92,11 @@ public class Stage_RED extends LinearOpMode {
         Trajectory backup_left = drive.trajectoryBuilder(left.end())
                 .back(3)
                 .build();
-        Trajectory strafe_left = drive.trajectoryBuilder(backup_left.end())
-                .strafeRight(13)
+        Trajectory turn_leftaround = drive.trajectoryBuilder(backup_left.end())
+                .strafeRight(1)
                 .build();
 
-        Trajectory left_stage = drive.trajectoryBuilder(strafe_left.end())
+        Trajectory left_stage = drive.trajectoryBuilder(turn_leftaround.end())
                 .splineTo(new Vector2d(-24.76, -15.86), Math.toRadians(0.00))
                 .build();
         Trajectory left_straight = drive.trajectoryBuilder(left_stage.end())
@@ -106,17 +116,29 @@ public class Stage_RED extends LinearOpMode {
                 .strafeLeft(15)
                 .build();
 
-        Trajectory backup_right = drive.trajectoryBuilder(left.end())
-                .back(6)
+        Trajectory backup_right = drive.trajectoryBuilder(right.end())
+                .back(13)
                 .build();
 
 
-        Trajectory right_stage = drive.trajectoryBuilder(backup_right.end())
-                .splineTo(new Vector2d(-24.76, -15.86), Math.toRadians(0.00))
+        Trajectory right_driveintake = drive.trajectoryBuilder(backup_right.end())
+                .lineToLinearHeading(new Pose2d(-55, -34.5, Math.toRadians(0.00)))
                 .build();
-        Trajectory right_straight = drive.trajectoryBuilder(right_stage.end())
-                .forward(47)
+        Trajectory right_straight = drive.trajectoryBuilder(right_driveintake.end())
+                .back(2.4)
                 .build();
+        Trajectory right_truss = drive.trajectoryBuilder(right_straight.end())
+                .lineToLinearHeading(new Pose2d(-42.5, -50, Math.toRadians(0.00)))
+                .build();
+        Trajectory right_strafe_ = drive.trajectoryBuilder(right_truss.end())
+                .strafeRight(6)
+                .build();
+
+        Trajectory right_under_truss = drive.trajectoryBuilder(right_strafe_.end())
+                .forward(40)
+                .build();
+
+
         Trajectory right_drop = drive.trajectoryBuilder(right_straight.end())
                 .splineTo(new Vector2d(37.7, -44.7), Math.toRadians(0.00))
                 .build();
@@ -166,35 +188,51 @@ public class Stage_RED extends LinearOpMode {
             case LEFT: //left
                 drive.followTrajectory(left);
                 drive.followTrajectory(backup_left);
-                drive.followTrajectory(strafe_left);
-                drive.followTrajectory(left_stage);
-                drive.followTrajectory(left_straight);
-                drive.followTrajectory(left_drop);
-                scoreLow(deposit_left, away_left);
-                drive.followTrajectory(left_park);
+                drive.followTrajectory(right_driveintake);
+//                drive.followTrajectory(strafe_left);
+//                drive.followTrajectory(left_stage);
+//                drive.followTrajectory(left_straight);
+//                drive.followTrajectory(left_drop);
+//                scoreLow(deposit_left, away_left);
+//                drive.followTrajectory(left_park);
 
 
                 break;
             case NOT_FOUND: //right
                 drive.followTrajectory(right);
                 drive.followTrajectory(backup_right);
-
-                drive.followTrajectory(right_stage);
+                drive.turn(Math.toRadians(-67.5));
+                drive.followTrajectory(right_driveintake);
                 drive.followTrajectory(right_straight);
-                drive.followTrajectory(right_drop);
-                scoreLow(deposit_right, away_right);
-                drive.followTrajectory(after_right);
+                intake.intake(2.5);//grab
+                intake.outtake(1.5);//grab
+                arm.downpixel();//grab
+                sleep(1500);//grab
+                arm.grab();//grab
+                sleep(500);//grab
+                arm.drop.setPosition(466);
+                arm.aftergrab();//grab
+                drive.followTrajectory(right_truss);
+                drive.followTrajectory(right_strafe_);
+                drive.followTrajectory(right_under_truss);
+
+
+//                drive.followTrajectory(right_stage);
+//                drive.followTrajectory(right_straight);
+//                drive.followTrajectory(right_drop);
+//                scoreLow(deposit_right, away_right);
+//                drive.followTrajectory(after_right);
                // drive.followTrajectory(right_park);
                 break;
             case RIGHT: //middle
                 drive.followTrajectory(middle);
                 drive.followTrajectory(backup_middle);
                 drive.followTrajectory(strafe_middle);
-                drive.followTrajectory(stage_middle);
-                drive.followTrajectory(straight_middle);
-                drive.followTrajectory(drop_middle);
-                scoreLow(deposit_middle, away_middle);
-                drive.followTrajectory(middle_after);
+//                drive.followTrajectory(stage_middle);
+//                drive.followTrajectory(straight_middle);
+//                drive.followTrajectory(drop_middle);
+//                scoreLow(deposit_middle, away_middle);
+//                drive.followTrajectory(middle_after);
                // drive.followTrajectory(middle_park);
                 break;
 
@@ -209,14 +247,14 @@ public class Stage_RED extends LinearOpMode {
 
 
 
-        arm.goToScoringPos();
-        lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
-
-        drive.followTrajectory(backdrop);
-        arm.deposit(.6);
-        drive.followTrajectory(away);
-        arm.intakePos();
-        lift.moveToTarget(Lift.LiftPos.START);
+//        arm.goToScoringPos();
+//        lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
+//
+//        drive.followTrajectory(backdrop);
+//        arm.deposit(.6);
+//        drive.followTrajectory(away);
+//        arm.intakePos();
+//        lift.moveToTarget(Lift.LiftPos.START);
 
     }
 }

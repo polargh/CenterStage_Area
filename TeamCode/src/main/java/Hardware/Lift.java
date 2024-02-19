@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Lift {
     public PIDController controller;
     public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
-    public static double f = 0.0007;  // prevents arm from falling from gravity
+    public static double f = 0.0008;  // prevents arm from falling from gravity
 
 
 

@@ -13,9 +13,9 @@ public class Robot implements Subsystem {
 
     public Robot(HardwareMap hardwareMap) {
         outtake = new Outtake(hardwareMap);
-        intake = new Intake(hardwareMap);
+        //intake = new Intake(hardwareMap);
         drivebase = new Drivebase(hardwareMap);
-        systems = new Subsystem[]{outtake, intake, drivebase};
+       // systems = new Subsystem[]{outtake, intake, drivebase};
     }
 
     @Override

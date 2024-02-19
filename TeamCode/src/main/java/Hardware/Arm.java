@@ -7,57 +7,93 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import Hardware.v2bot_map;
+
 public class Arm {
-    public Servo wheel;
+    public Servo rotwrist ;
     public Servo raxon;
-    public Servo wrist;
+    public Servo bendwrist;
     public Servo laxon;
+    public Servo drop;
+
+    public Servo rearclaw;
+    public Servo frontclaw;
+    double FRONTGRAB = .2729;
+    double REARGRAB = .413;
+    double FRONTRELEASE = .472;
+    double REARRELEASE = .235;
+
+
+
+
     Telemetry telemetry;
 
 
     public Arm(v2bot_map robot, Telemetry telemetry){
-        this.wheel = robot.wheel;
+        this.rotwrist = robot.rotwrist;
         this.raxon = robot.raxon;
-        this.wrist = robot.wrist;
+        this.bendwrist = robot.bendwrist;
         this.laxon = robot.laxon;
+        this.drop = robot.drop;
+        this.frontclaw = robot.frontclaw;
+        this.rearclaw = robot.rearclaw;
         this.telemetry = telemetry;
     }
     public Arm(HardwareMap hwMap, Telemetry telemetry){
-        wheel = hwMap.get(Servo.class, "wheel");
+        rotwrist = hwMap.get(Servo.class, "spinwrist");
         raxon = hwMap.get(Servo.class, "raxon");
         laxon = hwMap.get(Servo.class, "laxon");
-        wrist = hwMap.get(Servo.class, "wrist");
+        bendwrist = hwMap.get(Servo.class, "bendwrist");
+        drop = hwMap.get(Servo.class, "drop");
+        frontclaw = hwMap.get(Servo.class, "frontclaw");
+        rearclaw = hwMap.get(Servo.class, "rearclaw");
         this.telemetry = telemetry;
     }
-
+    public void pulloutpixel(){
+        drop.setPosition(.465);
+        bendwrist.setPosition(.145);
+    }
     public void goToScoringPos(){
-       wrist.setPosition(.001);
-       raxon.setPosition(.11);
-       laxon.setPosition(.89);
+        drop.setPosition(.465);
+        raxon.setPosition(.3);
+        laxon.setPosition(.7);
     }
 
-    public void deposit(double sec){
-        ElapsedTime runtime = new ElapsedTime();
-        runtime.reset();
-        while(runtime.seconds() <= sec){
-            wheel.setPosition(.25);
-        }
-        wheel.setPosition(.5);
-        runtime.reset();
+    public void deposit(){
+
     }
+
 
     public void intakePos(){
-        wrist.setPosition(.999);
-        raxon.setPosition(.785);
-        laxon.setPosition(.225);
+        raxon.setPosition(.658);
+        laxon.setPosition(.352);
+        bendwrist.setPosition(.149);
+        rotwrist.setPosition(.497);
+        rearclaw.setPosition(REARRELEASE);
+        frontclaw.setPosition(FRONTRELEASE);
     }
-    public void wheelIntake(double sec){
-        ElapsedTime runtime = new ElapsedTime();
-        runtime.reset();
-        while(runtime.seconds() <= sec){
-            wheel.setPosition(.99);
-        }
-        wheel.setPosition(.5);
-        runtime.reset();
+    public void downpixel(){ //almost grab
+        rotwrist.setPosition(.497);
+        raxon.setPosition(.798);
+        laxon.setPosition(.202);
+        bendwrist.setPosition(.1538);
+
     }
+    public void grab(){ //almost grab
+        rearclaw.setPosition(REARGRAB);
+        frontclaw.setPosition(FRONTGRAB);
+    }
+    public void aftergrab(){ //almost grab
+        raxon.setPosition(.64);
+        laxon.setPosition(.36);
+        bendwrist.setPosition(.149);
+    }
+
+//    ElapsedTime runtime = new ElapsedTime();
+//        runtime.reset();
+//        while(runtime.seconds() <= sec){
+//        rotwrist.setPosition(.99);
+//    }
+//        wheel.setPosition(.5);
+//        runtime.reset();
 }
