@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor; //REV
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
@@ -71,6 +72,8 @@ public class v2bot_map {
     public Servo raxon;
     public Servo wrist;
     public Servo laxon;
+    public Servo lflap;
+    public Servo rflap;
 
 
     public Servo rearclaw;
@@ -80,7 +83,7 @@ public class v2bot_map {
     public Servo rotwrist;
     public Servo bendwrist;
     //public Servo rightaxon;
-   // public Servo leftaxon;
+    // public Servo leftaxon;
 
     //    public Servo ldrop;
     public WebcamName webcam;
@@ -118,6 +121,8 @@ public class v2bot_map {
         laxon = hwMap.get(Servo.class, "laxon");
         raxon = hwMap.get(Servo.class, "raxon");
         raxon = hwMap.get(Servo.class, "raxon");
+        lflap = hwMap.get(Servo.class, "lflap");
+        rflap = hwMap.get(Servo.class, "rflap");
 
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");
 
