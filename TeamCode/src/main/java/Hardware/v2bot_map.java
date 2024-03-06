@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor; //REV
-
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 /**
@@ -87,6 +87,7 @@ public class v2bot_map {
 
     //    public Servo ldrop;
     public WebcamName webcam;
+    public DistanceSensor intakedis;
 //    public DcMotor rin = null;
 //    public DcMotor lin = null;
 
@@ -123,6 +124,8 @@ public class v2bot_map {
         raxon = hwMap.get(Servo.class, "raxon");
         lflap = hwMap.get(Servo.class, "lflap");
         rflap = hwMap.get(Servo.class, "rflap");
+        intakedis = hwMap.get(DistanceSensor.class, "dispixel");
+
 
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");
 
@@ -145,7 +148,7 @@ public class v2bot_map {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        rin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -158,6 +161,9 @@ public class v2bot_map {
         climb.setPower(0);
         intake.setPower(0);
 
+        climb.setTargetPosition(0);
+        climb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 //        lin.setPower(0);
 //        rin.setPower(0);
 
@@ -168,7 +174,7 @@ public class v2bot_map {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        climb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        climb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        lin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        rin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
