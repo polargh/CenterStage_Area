@@ -12,8 +12,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Lift {
     public PIDController controller;
-    public static double p = 0.005, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
-    public static double f = 0.0008;  // prevents arm from falling from gravity
+    public static double p = 0.0055, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
+    public static double f = 0.00049;  // prevents arm from falling from gravity
 
 
 
@@ -34,7 +34,7 @@ public class Lift {
     public static int MID_HIGH_POS = 2550;
 
     public static int HIGH_POS = 3100;
-    public static int LOW_AUTO =300;
+    public static int LOW_AUTO =80;
 
 
 //    int MANUAL = larm.getCurrentPosition() +20;

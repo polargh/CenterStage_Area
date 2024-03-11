@@ -1,41 +1,124 @@
 package Autos;
 
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 
+import CompCode.coolTele;
+import Hardware.Intake;
 import Hardware.Lift;
+import Hardware.v2bot_map;
 import Hardware.detector_2_ranges;
-
+import Hardware.Arm;
 //import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Red_DROP", group="Auto")
+@Autonomous(name="Red_BACK_two+four_back", group="Auto")
 public class Drop_RED extends LinearOpMode {
+    SampleMecanumDrive drive;
     OpenCvCamera webcam;
     Lift lift;
-    public enum START_POSITION{
+    Arm arm;
+    Intake intake;
+    double LFLAPUP = .465;
+    double LFLAPDOWN = .57;
+    double RFLAPUP = .5;
+    double RFLAPDOWN = .4309;
+    double waitTime1 = .5;
+    double waitTime2 = 0.15;
+    double waitTime3 = 1.05;
+    double waitTime4 = .65;
+    double waitTime6 = .45;
+    double waitTime7 = .45;
+    double waitTime8 = .25;
+    private MultipleTelemetry tl;
+
+    ElapsedTime waitTimer1 = new ElapsedTime();
+    ElapsedTime waitTimer2 = new ElapsedTime();
+    ElapsedTime waitTimer3 = new ElapsedTime();
+    ElapsedTime waitTimer4 = new ElapsedTime();
+
+    ElapsedTime waitTimer6 = new ElapsedTime();
+
+    ElapsedTime waitTimer7 = new ElapsedTime();
+    ElapsedTime waitTimer8 = new ElapsedTime();
+
+    ElapsedTime runtime = new ElapsedTime();
+//
+
+    public enum START_POSITION {
         BLUE_LEFT,
         BLUE_RIGHT,
         RED_LEFT,
         RED_RIGHT
     }
+
+    enum elbowDownState { //INTAKE
+        START,
+        MID,
+        ALMOST,
+        INTAKE,
+        WRIST,
+        AFTERINTAKE
+
+    }
+
+    enum grab { //INTAKE
+        START,
+
+        DOWN,
+        PICKPIXELS,
+        UP
+
+
+    }
+
+
+    enum elbowUpState { //OUTTAKE no lift
+        START,
+        OUTTAKE,
+        WRIST
+
+
+    }
+
+    enum Outtakelift { //OUTTAKE lift
+        START,
+        OUTTAKE,
+        WRIST
+
+
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
         lift = new Lift(hardwareMap, telemetry);
+        arm = new Arm(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
+
+        Drop_RED.elbowUpState outtake = Drop_RED.elbowUpState.START;
+        Drop_RED.elbowDownState intakepos = Drop_RED.elbowDownState.START;
+        Drop_RED.grab claw = Drop_RED.grab.START;
+        Drop_RED.Outtakelift outlift = Drop_RED.Outtakelift.START;
+
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
@@ -50,87 +133,377 @@ public class Drop_RED extends LinearOpMode {
                                              webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
                                          }
 
-            @Override
+                                         @Override
                                          public void onError(int errorCode) {
                                              //This will be called if the camera could not be opened
                                          }
                                      }
 
         );
+        arm.init();
 
         Pose2d startPose = new Pose2d(16.62, -63.42, Math.toRadians(90.00));
         drive.setPoseEstimate(startPose);
         Trajectory right = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(22.69, -43.41), Math.toRadians(90.00))
+                .splineTo(new Vector2d(22.69, -40), Math.toRadians(90.00))
+                .build();
+        Trajectory middle = drive.trajectoryBuilder(startPose)
+                .splineTo(new Vector2d(13.8, -33.7), Math.toRadians(90.00), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory middleback = drive.trajectoryBuilder(middle.end())
+                .back(12)
+                .build();
+        Trajectory middledropyellow = drive.trajectoryBuilder(middleback.end())
+                .splineTo(new Vector2d(42.4, -33.4), Math.toRadians(0.00))
                 .build();
 
-        Trajectory middle = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(13.22, -39.31), Math.toRadians(90.00))
-                .build();
+//        TrajectorySequence middleafter = drive.trajectorySequenceBuilder(startPose)
+//                .splineTo(new Vector2d(14, -41.5), Math.toRadians(90.00))
+//                .splineToConstantHeading(new Vector2d(20.37, -52), Math.toRadians(90.00))
+//                .splineTo(new Vector2d(42.4, -33.4), Math.toRadians(0.00))
+//                .build();
 
         Trajectory left = drive.trajectoryBuilder(startPose)
                 .splineTo(new Vector2d(8.93, -39.13), Math.toRadians(140.00))
                 .build();
+        Trajectory deposit_middle = drive.trajectoryBuilder(middledropyellow.end())
+                .forward(7)
+                .build();
+        Trajectory away_middle = drive.trajectoryBuilder(deposit_middle.end())
+                .back(5)
+                .build();
+        TrajectorySequence middleplus2 = drive.trajectorySequenceBuilder(away_middle.end())
+                .splineToConstantHeading(new Vector2d(35.91, -13.4), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(-40, -13.4), Math.toRadians(180))
+                .build();
 
+        Trajectory middle_intakeforward = drive.trajectoryBuilder(middleplus2.end())
+                .splineToConstantHeading(new Vector2d(-56.3, -11), Math.toRadians(0.00))
+                .build();
+        Trajectory middle_intakebackward = drive.trajectoryBuilder(middle_intakeforward.end())
+                .splineToConstantHeading(new Vector2d(-52, -10), Math.toRadians(0.00))
+                .build();
+        TrajectorySequence middle_backstage2drop = drive.trajectorySequenceBuilder(middle_intakebackward.end())
+                .splineToConstantHeading(new Vector2d(50, -14.83), Math.toRadians(0.00))
+                .build();
 
         Trajectory backup_middle = drive.trajectoryBuilder(middle.end())
-                .back(2)
+                .back(3)
                 .build();
         Trajectory drop_middle = drive.trajectoryBuilder(backup_middle.end())
-                .lineToLinearHeading(new Pose2d(44.86, -40.63, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(44.24, -39.75, Math.toRadians(0.00)))
                 .build();
 
+
+        Trajectory middle_park = drive.trajectoryBuilder(away_middle.end())
+                //  .strafeRight(24)
+                .strafeLeft(32)
+                .build();
         Trajectory backup_right = drive.trajectoryBuilder(right.end())
-                .back(10)
-                .build();
-        Trajectory middle_park = drive.trajectoryBuilder(backup_middle.end())
-                .strafeRight(25)
-                .build();
-        Trajectory right_park = drive.trajectoryBuilder(backup_right.end())
-                .strafeRight(20)
-                .build();
-        Trajectory backup_left = drive.trajectoryBuilder(left.end())
-                .back(30)
+                .back(3.6)
                 .build();
 
-        Trajectory left_strafe = drive.trajectoryBuilder(backup_left.end())
-                .strafeRight(6)
+        Trajectory right_drop = drive.trajectoryBuilder(backup_right.end())
+                .lineToLinearHeading(new Pose2d(44.24, -45, Math.toRadians(0.00)))
                 .build();
-        Trajectory left_park = drive.trajectoryBuilder(left_strafe.end())
-                .back(9)
+        Trajectory deposit_right = drive.trajectoryBuilder(right.end())
+                .forward(6)
+                .build();
+        Trajectory away_right = drive.trajectoryBuilder(deposit_right.end())
+                .back(5)
+                .build();
+        Trajectory right_park = drive.trajectoryBuilder(away_right.end())
+                // .strafeRight(15)
+                .strafeLeft(33.5)
+                .build();
+
+        Trajectory backup_left = drive.trajectoryBuilder(middleplus2.end())
+                .back(5)
+                .build();
+        Trajectory left_drop = drive.trajectoryBuilder(backup_left.end())
+                .lineToLinearHeading(new Pose2d(44.24, -31.2, Math.toRadians(0.00)))
+                .build();
+
+        Trajectory deposit_left = drive.trajectoryBuilder(left_drop.end())
+                .forward(6.8)
+                .build();
+        Trajectory away_left = drive.trajectoryBuilder(deposit_left.end())
+                .back(5)
+                .build();
+        Trajectory left_park = drive.trajectoryBuilder(away_left.end())
+                // .strafeRight(30)
+                .strafeLeft(16.9)
                 .build();
 
         waitForStart();
         if (isStopRequested()) return;
-
-
-        switch (detector.getLocation()) {
+        detector_2_ranges.Location location = detector.getLocation();
+        switch (location) {
             case LEFT: //middle
                 drive.followTrajectory(middle);
-                drive.followTrajectory(backup_middle);
-                drive.followTrajectory(drop_middle);
-                //lift.moveToTarget(Lift.LiftPos.LOW);
-                //drive.followTrajectory(middle_park);
+                drive.followTrajectory(middleback);
+                drive.followTrajectory(middledropyellow);
+                lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
+                arm.outyellowp1();
+                arm.outyellowp2();
+                sleep(200);
+                drive.followTrajectory(deposit_middle);
+                arm.release();
+                drive.followTrajectory(away_middle);
+                arm.intakePos();
+                lift.moveToTarget(Lift.LiftPos.START);
+                arm.afterdropintake();
+                drive.followTrajectorySequence(middleplus2);
+                intake.intakewhile5();
+                drive.followTrajectory(middle_intakeforward);
+                sleep(1400);
+                drive.followTrajectory(middle_intakebackward);
+                intake.stopintake();
+                intake.outtake(.75);
+                arm.flapsup();
+                sleep(200);
+                arm.downpixel();
+                arm.grab();
+                arm.aftergrab();
+                drive.followTrajectorySequence(middle_backstage2drop);
+//                arm.outyellowp1();
+//                arm.outyellowp2();
+//                arm.drop();
+//                sleep(300);
+//                arm.intakePosafterscore();
+//                sleep(100);
+//                arm.intakePos();
+
+                // drive.followTrajectorySequence(middleintake_2);
+
+//                drive.followTrajectory(backup_middle);
+//                drive.followTrajectory(drop_middle);
+                // scoreLow(deposit_middle, away_middle, middle_park);
+
                 break;
             case NOT_FOUND: //left
                 drive.followTrajectory(left);
                 drive.followTrajectory(backup_left);
-                drive.followTrajectory(left_strafe);
-                drive.followTrajectory(left_park);
+                drive.followTrajectory(left_drop);
+                //scoreLow(deposit_left, away_left, left_park);
+
                 break;
             case RIGHT: //right
                 drive.followTrajectory(right);
                 drive.followTrajectory(backup_right);
-                drive.followTrajectory(right_park);
+                drive.followTrajectory(right_drop);
+                // scoreLow(deposit_right, away_right, right_park);
+
                 break;
         }
 
+        while (opModeIsActive() && !isStopRequested()) {
+            // Our state machine logic
+            // You can have multiple switch statements running together for multiple state machines
+            // in parallel. This is the basic idea for subsystems and commands.
+
+            if (isStopRequested()) return;
+
+            switch (outlift) { // scoring pos with lift
+                case START:
+                    if (gamepad2.circle || gamepad2.dpad_down || gamepad2.dpad_up) {
+                        arm.drop.setPosition(.63);
+                        arm.bendwrist.setPosition(.148);
+                        waitTimer1.reset();
+                        outtake = Drop_RED.elbowUpState.OUTTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case OUTTAKE:
+                    if (waitTimer1.seconds() >= waitTime1) {
+                        arm.drop.setPosition(.63);
+                        arm.raxon.setPosition(.3);
+                        arm.laxon.setPosition(.7);
+//                        robot.laxon.setPosition(.92);
+                        waitTimer1.reset();
+                        outtake = Drop_RED.elbowUpState.WRIST;
+                    }
+                    break;
+                case WRIST:
+                    if (waitTimer4.seconds() >= waitTime4) {
+
+                        arm.rotwrist.setPosition(.685);
+                        arm.bendwrist.setPosition(.705);
 
 
+                        arm.drop.setPosition(.95);
+
+                        waitTimer4.reset();
+                        outtake = Drop_RED.elbowUpState.START;
+                    }
+                    break;
+
+            }
+
+            switch (outtake) { // scoring pos no lift
+                case START:
+                    if (gamepad2.square) {
+                        arm.drop.setPosition(.63);
+                        arm.bendwrist.setPosition(.145);
+                        waitTimer1.reset();
+                        outtake = Drop_RED.elbowUpState.OUTTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case OUTTAKE:
+                    if (waitTimer1.seconds() >= waitTime1) {
+                        arm.drop.setPosition(.63);
+                        arm.raxon.setPosition(.3);
+                        arm.laxon.setPosition(.7);
+//                        robot.raxon.setPosition(.23);
+//                        robot.laxon.setPosition(.77);
+//
+                        waitTimer1.reset();
+                        outtake = Drop_RED.elbowUpState.WRIST;
+                    }
+                    break;
+                case WRIST:
+                    if (waitTimer4.seconds() >= waitTime4) {
+
+                        arm.rotwrist.setPosition(.595);
+                        arm.bendwrist.setPosition(.682);
+                        arm.lflap.setPosition(LFLAPDOWN);
+                        arm.rflap.setPosition(RFLAPDOWN);
 
 
+                        arm.drop.setPosition(.89);
 
-        webcam.stopStreaming();
+                        waitTimer4.reset();
+                        outtake = Drop_RED.elbowUpState.START;
+                    }
+                    break;
+
+            }
+
+            switch (intakepos) { // start pos
+                case START:
+                    if (gamepad2.cross) {
+
+                        arm.lflap.setPosition(LFLAPDOWN);
+                        arm.rflap.setPosition(RFLAPDOWN);
+                        arm.rotwrist.setPosition(.685);
+                        arm.bendwrist.setPosition(.151);
+                        arm.release();
+                        arm.drop.setPosition(.63);
+                        waitTimer2.reset();
+                        intakepos = Drop_RED.elbowDownState.MID; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case MID:
+                    if (waitTimer2.seconds() >= waitTime2) {
+                        arm.raxon.setPosition(.55);
+                        arm.laxon.setPosition(.45);
+//                        robot.raxon.setPosition(.3);
+//                        robot.laxon.setPosition(.7);
+
+
+                        waitTimer2.reset();
+                        intakepos = Drop_RED.elbowDownState.INTAKE;
+                    }
+                    break;
+                case ALMOST:
+                    if (waitTimer2.seconds() >= waitTime2) {
+                        arm.raxon.setPosition(.6);
+                        arm.laxon.setPosition(.4);
+                        arm.bendwrist.setPosition(.153);
+//                        robot.raxon.setPosition(.3);
+//                        robot.laxon.setPosition(.7);
+
+
+                        waitTimer6.reset();
+                        intakepos = Drop_RED.elbowDownState.INTAKE;
+                    }
+                    break;
+                case INTAKE:
+                    if (waitTimer6.seconds() >= waitTime6) {
+                        arm.rotwrist.setPosition(.497);
+                        // robot.drop.setPosition(.89);
+                        arm.raxon.setPosition(.66);
+                        arm.laxon.setPosition(.34);
+                        arm.bendwrist.setPosition(.157);
+
+                        intakepos = Drop_RED.elbowDownState.AFTERINTAKE;
+                        waitTimer8.reset();
+                    }
+                    break;
+                case AFTERINTAKE:
+                    if (waitTimer8.seconds() >= waitTime8) {
+
+                        arm.drop.setPosition(.89);
+
+                        intakepos = Drop_RED.elbowDownState.START;
+
+                    }
+                    break;
+
+
+            }
+
+            switch (claw) { //grab from transfer
+                case START:
+                    if (gamepad2.triangle) {
+                        arm.release();
+                        arm.lflap.setPosition(LFLAPUP);
+                        arm.rflap.setPosition(RFLAPUP);
+
+                        waitTimer6.reset();
+                        claw = Drop_RED.grab.DOWN; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
+                    }
+                    break;
+                case DOWN:
+                    if (waitTimer6.seconds() >= waitTime6) {
+                        arm.raxon.setPosition(.783);
+                        arm.laxon.setPosition(.217);
+                        arm.bendwrist.setPosition(.159);
+                        //  robot.drop.setPosition(.63);
+                        waitTimer6.reset();
+                        claw = Drop_RED.grab.PICKPIXELS;
+                    }
+                    break;
+                case PICKPIXELS:
+                    if (waitTimer6.seconds() >= waitTime6) {
+                        arm.grab();
+
+                        waitTimer7.reset();
+                        claw = Drop_RED.grab.UP;
+                    }
+                    break;
+                case UP:
+                    if (waitTimer7.seconds() >= waitTime7) {
+                        arm.raxon.setPosition(.66);
+                        arm.laxon.setPosition(.34);
+                        arm.bendwrist.setPosition(.15);
+                        claw = Drop_RED.grab.START;
+                    }
+                    break;
+
+            }
+
+
+            webcam.stopStreaming();
+        }
+//    public void scoreLow(Trajectory backdrop, Trajectory away, Trajectory park){
+//
+//
+//
+//        arm.goToScoringPos();
+//        lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
+//
+//        drive.followTrajectory(backdrop);
+//        arm.deposit(1);
+//        drive.followTrajectory(away);
+//        arm.autonparkpos();
+//        drive.followTrajectory(park);
+//
+//        lift.moveToTarget(Lift.LiftPos.START);
+//        arm.intakePos();
+//
+//
+//    }
     }
 }
 
