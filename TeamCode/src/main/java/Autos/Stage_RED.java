@@ -216,6 +216,7 @@ public class Stage_RED extends LinearOpMode {
                 sleep(400);
                 intake.stopintake();
                 grab();
+
                // setIntake();
                 drive.followTrajectory(right_truss);
                 drive.followTrajectory(right_strafe_);
@@ -226,11 +227,11 @@ public class Stage_RED extends LinearOpMode {
                 //arm.out();
                 lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
                 drive.followTrajectory(rightapproach);
-                arm.drop();
+                arm.release();
                 sleep(200);
                 drive.followTrajectory(away_right);
-                arm.intakePosafterscore();
-                lift.moveToTarget(Lift.LiftPos.START);
+//                arm.intakePosafterscore();
+//                lift.moveToTarget(Lift.LiftPos.START);
                 drive.followTrajectory(threeright);
                 drive.followTrajectory(backstraightright);
 

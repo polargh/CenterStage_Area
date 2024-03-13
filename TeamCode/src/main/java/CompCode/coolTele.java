@@ -103,13 +103,15 @@ public class coolTele extends LinearOpMode {
 //    //private MultipleTelemetry tl;
 
     double intakepos = 4;
-    double waitTime1 = .5;
+    double waitTime1 = .35;
     double waitTime2 = 0.15;
     double waitTime3 = 1.05;
     double waitTime4 = .65;
-    double waitTime6 = .45;
-    double waitTime7 = .45;
+    double waitTime9 = .65;
+    double waitTime6 = .495;
+    double waitTime7 = .4;
     double waitTime8 = .25;
+    double waitTime10 = .4;
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -121,6 +123,8 @@ public class coolTele extends LinearOpMode {
 
     ElapsedTime waitTimer7 = new ElapsedTime();
     ElapsedTime waitTimer8 = new ElapsedTime();
+
+    ElapsedTime waitTimer10 = new ElapsedTime();
 
     ElapsedTime runtime = new ElapsedTime();
 //
@@ -198,6 +202,7 @@ public class coolTele extends LinearOpMode {
         robot.raxon.setPosition(.66);
         robot.laxon.setPosition(.34);
         robot.bendwrist.setPosition(.1535);
+      //  robot.drone.setPosition(.5);
 
         waitForStart();
 
@@ -333,7 +338,7 @@ public class coolTele extends LinearOpMode {
                        // robot.drop.setPosition(.89);
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
-                        robot.bendwrist.setPosition(.157);
+                        robot.bendwrist.setPosition(.153);
 
                         intake = elbowDownState.AFTERINTAKE;
                         waitTimer8.reset();
@@ -370,12 +375,12 @@ public class coolTele extends LinearOpMode {
                         robot.laxon.setPosition(.217);
                         robot.bendwrist.setPosition(.159);
                       //  robot.drop.setPosition(.63);
-                        waitTimer6.reset();
+                        waitTimer10.reset();
                         claw = grab.PICKPIXELS;
                     }
                     break;
                 case PICKPIXELS:
-                    if(waitTimer6.seconds() >= waitTime6) {
+                    if(waitTimer10.seconds() >= waitTime10) {
                         robot.frontclaw.setPosition(FRONTGRAB);
                         robot.rearclaw.setPosition(REARGRAB);
 
@@ -588,9 +593,11 @@ public class coolTele extends LinearOpMode {
 //                }else {
 //                    robot.climb.setPower(0);
 //                }
-            if(gamepad1.circle && gamepad1.cross) {
-                robot.drone.setPosition(.8);
-            }
+//            if(gamepad1.square) {
+//
+//                    robot.drone.setPosition(.8);
+//
+//            }
             if (gamepad1.circle) { //drone
                 drone_target = 1000; //bottom
             }

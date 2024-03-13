@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,7 +29,7 @@ import Hardware.Arm;
 
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
-
+@Disabled
 @Autonomous(name="Red_BACK_two+four_back", group="Auto")
 public class Drop_RED extends LinearOpMode {
     SampleMecanumDrive drive;
@@ -75,7 +76,8 @@ public class Drop_RED extends LinearOpMode {
         ALMOST,
         INTAKE,
         WRIST,
-        AFTERINTAKE
+        AFTERINTAKE,
+        IDLE
 
     }
 
@@ -84,7 +86,8 @@ public class Drop_RED extends LinearOpMode {
 
         DOWN,
         PICKPIXELS,
-        UP
+        UP,
+        IDLE
 
 
     }
@@ -93,7 +96,8 @@ public class Drop_RED extends LinearOpMode {
     enum elbowUpState { //OUTTAKE no lift
         START,
         OUTTAKE,
-        WRIST
+        WRIST,
+        IDLE
 
 
     }
@@ -101,7 +105,8 @@ public class Drop_RED extends LinearOpMode {
     enum Outtakelift { //OUTTAKE lift
         START,
         OUTTAKE,
-        WRIST
+        WRIST,
+        IDLE
 
 
     }
@@ -114,10 +119,10 @@ public class Drop_RED extends LinearOpMode {
         arm = new Arm(hardwareMap, telemetry);
         intake = new Intake(hardwareMap, telemetry);
 
-        Drop_RED.elbowUpState outtake = Drop_RED.elbowUpState.START;
-        Drop_RED.elbowDownState intakepos = Drop_RED.elbowDownState.START;
-        Drop_RED.grab claw = Drop_RED.grab.START;
-        Drop_RED.Outtakelift outlift = Drop_RED.Outtakelift.START;
+        Drop_RED.elbowUpState outtake = Drop_RED.elbowUpState.START;// no lift position
+        Drop_RED.elbowDownState intakepos = Drop_RED.elbowDownState.START; // intake position
+        Drop_RED.grab claw = Drop_RED.grab.START;// grab
+        Drop_RED.Outtakelift deposityellow = Drop_RED.Outtakelift.START; //yellow
 
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
@@ -155,7 +160,7 @@ public class Drop_RED extends LinearOpMode {
                 .back(12)
                 .build();
         Trajectory middledropyellow = drive.trajectoryBuilder(middleback.end())
-                .splineTo(new Vector2d(42.4, -33.4), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.4, -33.35), Math.toRadians(0.00))
                 .build();
 
 //        TrajectorySequence middleafter = drive.trajectorySequenceBuilder(startPose)
@@ -174,18 +179,19 @@ public class Drop_RED extends LinearOpMode {
                 .back(5)
                 .build();
         TrajectorySequence middleplus2 = drive.trajectorySequenceBuilder(away_middle.end())
-                .splineToConstantHeading(new Vector2d(35.91, -13.4), Math.toRadians(0.00))
+               // .splineToConstantHeading(new Vector2d(35.91, -13.4), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(27, -13.4), Math.toRadians(0.00))
                 .splineToConstantHeading(new Vector2d(-40, -13.4), Math.toRadians(180))
                 .build();
 
         Trajectory middle_intakeforward = drive.trajectoryBuilder(middleplus2.end())
-                .splineToConstantHeading(new Vector2d(-56.3, -11), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(-54.5, -11), Math.toRadians(0.00))
                 .build();
         Trajectory middle_intakebackward = drive.trajectoryBuilder(middle_intakeforward.end())
                 .splineToConstantHeading(new Vector2d(-52, -10), Math.toRadians(0.00))
                 .build();
         TrajectorySequence middle_backstage2drop = drive.trajectorySequenceBuilder(middle_intakebackward.end())
-                .splineToConstantHeading(new Vector2d(50, -14.83), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(47.8, -14.83), Math.toRadians(0.00))
                 .build();
 
         Trajectory backup_middle = drive.trajectoryBuilder(middle.end())
@@ -241,33 +247,41 @@ public class Drop_RED extends LinearOpMode {
         detector_2_ranges.Location location = detector.getLocation();
         switch (location) {
             case LEFT: //middle
+
+                // put state machine here
+
+
                 drive.followTrajectory(middle);
+                deposityellow = Outtakelift.START;
                 drive.followTrajectory(middleback);
                 drive.followTrajectory(middledropyellow);
-                lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
-                arm.outyellowp1();
-                arm.outyellowp2();
-                sleep(200);
+//                lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
+//                arm.outyellowp1();
+//                arm.outyellowp2();
+               // sleep(200);
                 drive.followTrajectory(deposit_middle);
                 arm.release();
                 drive.followTrajectory(away_middle);
-                arm.intakePos();
-                lift.moveToTarget(Lift.LiftPos.START);
-                arm.afterdropintake();
-                drive.followTrajectorySequence(middleplus2);
-                intake.intakewhile5();
-                drive.followTrajectory(middle_intakeforward);
-                sleep(1400);
-                drive.followTrajectory(middle_intakebackward);
-                intake.stopintake();
-                intake.outtake(.75);
-                arm.flapsup();
-                sleep(200);
-                arm.downpixel();
-                arm.grab();
-                arm.aftergrab();
-                drive.followTrajectorySequence(middle_backstage2drop);
-//                arm.outyellowp1();
+                intakepos = elbowDownState.START;
+
+
+//                lift.moveToTarget(Lift.LiftPos.START);
+//                arm.afterdropintake();
+//                drive.followTrajectorySequence(middleplus2);
+//                intake.intakewhile5();
+//                drive.followTrajectory(middle_intakeforward);
+//                sleep(1400);
+//                drive.followTrajectory(middle_intakebackward);
+//                intake.stopintake();
+//                intake.outtake(.75);
+//                arm.flapsup();
+//                sleep(200);
+//                arm.downpixel();
+//                arm.grab();
+//                arm.aftergrab();
+//                drive.followTrajectorySequence(middle_backstage2drop);
+
+////                arm.outyellowp1();
 //                arm.outyellowp2();
 //                arm.drop();
 //                sleep(300);
@@ -305,9 +319,10 @@ public class Drop_RED extends LinearOpMode {
 
             if (isStopRequested()) return;
 
-            switch (outlift) { // scoring pos with lift
+            switch (deposityellow) { // yellow
                 case START:
-                    if (gamepad2.circle || gamepad2.dpad_down || gamepad2.dpad_up) {
+                    if (drive.isBusy()) {
+                        lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
                         arm.drop.setPosition(.63);
                         arm.bendwrist.setPosition(.148);
                         waitTimer1.reset();
@@ -334,15 +349,18 @@ public class Drop_RED extends LinearOpMode {
                         arm.drop.setPosition(.95);
 
                         waitTimer4.reset();
-                        outtake = Drop_RED.elbowUpState.START;
+                        outtake = Drop_RED.elbowUpState.IDLE;
                     }
+                    break;
+                case IDLE:
+
                     break;
 
             }
 
-            switch (outtake) { // scoring pos no lift
+            switch (outtake) { // scoring pos no lift, backstage
                 case START:
-                    if (gamepad2.square) {
+                    if (!drive.isBusy()) {
                         arm.drop.setPosition(.63);
                         arm.bendwrist.setPosition(.145);
                         waitTimer1.reset();
@@ -373,16 +391,19 @@ public class Drop_RED extends LinearOpMode {
                         arm.drop.setPosition(.89);
 
                         waitTimer4.reset();
-                        outtake = Drop_RED.elbowUpState.START;
+                        outtake = Drop_RED.elbowUpState.IDLE;
                     }
+                    break;
+                case IDLE:
+
                     break;
 
             }
 
             switch (intakepos) { // start pos
                 case START:
-                    if (gamepad2.cross) {
-
+                    if (!drive.isBusy()) {
+                        lift.moveToTarget(Lift.LiftPos.START);
                         arm.lflap.setPosition(LFLAPDOWN);
                         arm.rflap.setPosition(RFLAPDOWN);
                         arm.rotwrist.setPosition(.685);
@@ -435,17 +456,19 @@ public class Drop_RED extends LinearOpMode {
 
                         arm.drop.setPosition(.89);
 
-                        intakepos = Drop_RED.elbowDownState.START;
+                        intakepos = Drop_RED.elbowDownState.IDLE;
 
                     }
                     break;
+                case IDLE:
 
+                    break;
 
             }
 
             switch (claw) { //grab from transfer
                 case START:
-                    if (gamepad2.triangle) {
+                    if (!drive.isBusy()) {
                         arm.release();
                         arm.lflap.setPosition(LFLAPUP);
                         arm.rflap.setPosition(RFLAPUP);
@@ -477,8 +500,11 @@ public class Drop_RED extends LinearOpMode {
                         arm.raxon.setPosition(.66);
                         arm.laxon.setPosition(.34);
                         arm.bendwrist.setPosition(.15);
-                        claw = Drop_RED.grab.START;
+                        claw = Drop_RED.grab.IDLE;
                     }
+                    break;
+                    case IDLE:
+
                     break;
 
             }

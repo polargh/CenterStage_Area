@@ -77,14 +77,13 @@ public class Arm {
 
     public void intakePos(){
        rotwrist.setPosition(.497);
-        drop.setPosition(.4825);
+        drop.setPosition(.63);
         raxon.setPosition(.64);
         laxon.setPosition(.36);
         bendwrist.setPosition(.15);
         rearclaw.setPosition(REARRELEASE);
         frontclaw.setPosition(FRONTRELEASE);
-        lflap.setPosition(LFLAPDOWN);
-        rflap.setPosition(RFLAPDOWN);
+
 
     }
     public void init(){
@@ -115,8 +114,8 @@ public class Arm {
         drop.setPosition(.4825);
     }
     public void flapsup(){ //almost grab
-        lflap.setPosition(LFLAPDOWN);
-        rflap.setPosition(RFLAPDOWN);
+        lflap.setPosition(LFLAPUP);
+        rflap.setPosition(RFLAPUP);
         rearclaw.setPosition(REARRELEASE);
         frontclaw.setPosition(FRONTRELEASE);
 
