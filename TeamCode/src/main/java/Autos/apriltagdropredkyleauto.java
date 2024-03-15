@@ -29,8 +29,8 @@ import Hardware.Arm;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="peterRed_BACK_two+four_back", group="Auto")
-public class peter extends LinearOpMode {
+@Autonomous(name="kyletestapril", group="Auto")
+public class apriltagdropredkyleauto extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;
     Lift lift;
@@ -262,7 +262,7 @@ public class peter extends LinearOpMode {
                 .back(15)
                 .build();
         Trajectory leftdropyellow = drive.trajectoryBuilder(backup_left.end())
-               // .splineTo(new Vector2d(13, -35), Math.toRadians(0.00))
+                // .splineTo(new Vector2d(13, -35), Math.toRadians(0.00))
                 .splineTo(new Vector2d(42.8, -25.2), Math.toRadians(0.00))
                 .splineToConstantHeading(new Vector2d(50.75, -25.2), Math.toRadians(0.00))
 
@@ -339,7 +339,7 @@ public class peter extends LinearOpMode {
                         case 0:
                             pos = Lift.LiftPos.LOW_AUTO;
                             drive.followTrajectoryAsync(middle);
-                          //  arm.drop.setPosition(.63);
+                            //  arm.drop.setPosition(.63);
                             arm.bendwrist.setPosition(.148);
                             state = 1;
                             break;
@@ -383,29 +383,29 @@ public class peter extends LinearOpMode {
                                 arm.intakePosafterscore();
                                 arm.intakePos();
                                 pos = Lift.LiftPos.START;
-                               drive.followTrajectorySequenceAsync(middleplus2);
-                               arm.drop.setPosition(.669);
+                                drive.followTrajectorySequenceAsync(middleplus2);
+                                arm.drop.setPosition(.669);
 
                                 state = 6;
                             }
                             break;
                         case 6:
-                        if (!drive.isBusy()) {
+                            if (!drive.isBusy()) {
 
-                            intake.intakewhile5();
-                            drive.followTrajectory(middle_intakeforward);
-                            waitTimer1.reset();
-                            state = 7;
-                        }
-                        break;
+                                intake.intakewhile5();
+                                drive.followTrajectory(middle_intakeforward);
+                                waitTimer1.reset();
+                                state = 7;
+                            }
+                            break;
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                              intake.stopintake();
+                                intake.stopintake();
                                 intake.outtake(.25);
                                 intake.intake5(.6);
                                 drive.followTrajectoryAsync(middle_intakebackward);
-                               intake.outtake2nd(.45);
+                                intake.outtake2nd(.45);
                                 arm.release();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
@@ -420,23 +420,23 @@ public class peter extends LinearOpMode {
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
                                 drive.followTrajectorySequenceAsync(middle_backstage2drop);
-                               waitTimer2.reset();
+                                waitTimer2.reset();
                                 state = 9;
                             }
                             break;
                         case 9:
                             if (waitTimer2.seconds() >= waitTime2) {
 
-                               arm.grab();
+                                arm.grab();
 
-                               waitTimer3.reset();
+                                waitTimer3.reset();
                                 state = 10;
                             }
                             break;
                         case 10:
                             if (waitTimer3.seconds() >= waitTime3) {
 
-                               arm.aftergrab();
+                                arm.aftergrab();
 
                                 waitTimer4.reset();
                                 state = 11;
@@ -448,7 +448,7 @@ public class peter extends LinearOpMode {
                                 arm.bendwrist.setPosition(.148);
 
 
-                                 waitTimer6.reset();
+                                waitTimer6.reset();
                                 state = 12;
                             }
                             break;
@@ -475,7 +475,7 @@ public class peter extends LinearOpMode {
                         case 14:
                             if (!drive.isBusy()) {
 
-                               arm.release();
+                                arm.release();
 
 
                                 state = 15;
@@ -493,7 +493,7 @@ public class peter extends LinearOpMode {
                         case 16:
                             if (!drive.isBusy()) {
 
-                               intake.intakewhile3();
+                                intake.intakewhile3();
                                 drive.followTrajectory(middle_intakeforward4);
                                 waitTimer10.reset();
 
@@ -588,9 +588,9 @@ public class peter extends LinearOpMode {
                         case 25:
                             if (!drive.isBusy()) {
 
-                               arm.intakePos();
+                                arm.intakePos();
 
-                            waitTimer9.reset();
+                                waitTimer9.reset();
                                 state = 26;
                             }
                             break;
@@ -618,7 +618,7 @@ public class peter extends LinearOpMode {
                             drive.followTrajectoryAsync(left);
                             //  arm.drop.setPosition(.63);
                             arm.bendwrist.setPosition(.148);
-                           stateleft = 1;
+                            stateleft = 1;
                             break;
                         case 1:
                             if (!drive.isBusy()) {
@@ -895,5 +895,9 @@ public class peter extends LinearOpMode {
                 break;
         }
 
-    }
+
+        }
+      public void localizeapriltag(){
+
+     }
 }

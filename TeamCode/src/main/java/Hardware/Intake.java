@@ -75,6 +75,16 @@ public class Intake {
         intake.setPower(0);
         runtime.reset();
     }
+    public void outtake2nd(double sec) {
+        drop.setPosition(.89);
+        ElapsedTime runtime = new ElapsedTime();
+        runtime.reset();
+        while(runtime.seconds() <= sec){
+            intake.setPower(-.1);
+        }
+        intake.setPower(0);
+        runtime.reset();
+    }
 
     public void score() {
        drop.setPosition(.466);

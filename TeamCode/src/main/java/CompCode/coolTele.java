@@ -46,17 +46,20 @@ public class coolTele extends LinearOpMode {
     double dropstack = 5;
     double stackpos = 0;
 
-    double FRONTGRAB = .2729;
-    double REARGRAB = .413;
-    double FRONTRELEASE = .477;
-    double REARRELEASE = .231;
+    double FRONTGRAB = .47;
+    double REARGRAB = .475;
+    double FRONTRELEASE = .3;
+    double REARRELEASE = .64;
+
+//    double FRONTRELEASE = .477; close to grab pos
+//    double REARRELEASE = .231;
     double LFLAPUP = .465;
     double LFLAPDOWN = .57;
     double RFLAPUP = .5;
     double RFLAPDOWN = .4309;
 
 
-    double rotate_pos = 2;
+    double rotate_pos = 3;
 
     double drop_pos = 5;
 
@@ -106,7 +109,7 @@ public class coolTele extends LinearOpMode {
     double waitTime1 = .35;
     double waitTime2 = 0.15;
     double waitTime3 = 1.05;
-    double waitTime4 = .65;
+    double waitTime4 = .3;
     double waitTime9 = .65;
     double waitTime6 = .495;
     double waitTime7 = .4;
@@ -136,7 +139,7 @@ public class coolTele extends LinearOpMode {
     public static int MID_POS = 700;
     public static int MID_HIGH_POS = 1000;
     //max 2320
-    public static int HIGH_POS = 1750;
+    public static int HIGH_POS = 1600;
     public static int LOW_AUTO = 900;
     int drone_target = 0;
 
@@ -197,7 +200,7 @@ public class coolTele extends LinearOpMode {
         robot.rflap.setPosition(RFLAPDOWN);
 //        robot.lflap.setPosition(.465); up
 //        robot.rflap.setPosition(.5); up
-        robot.rotwrist.setPosition(.497);
+        robot.rotwrist.setPosition(.41);
         // robot.drop.setPosition(.89);
         robot.raxon.setPosition(.66);
         robot.laxon.setPosition(.34);
@@ -219,7 +222,7 @@ public class coolTele extends LinearOpMode {
 
             switch (outlift) { // scoring pos with lift
                 case START:
-                    if (gamepad2.circle || gamepad2.dpad_down || gamepad2.dpad_up) {
+                    if ( gamepad2.dpad_down || gamepad2.dpad_up) {
                         robot.drop.setPosition(.63);
                         robot.bendwrist.setPosition(.148);
                         waitTimer1.reset();
@@ -239,7 +242,7 @@ public class coolTele extends LinearOpMode {
                 case WRIST:
                     if(waitTimer4.seconds() >= waitTime4) {
 
-                        rotate_pos = 2;
+                        rotate_pos = 1;
                         robot.bendwrist.setPosition(.705);
 
 
@@ -277,7 +280,7 @@ public class coolTele extends LinearOpMode {
                 case WRIST:
                     if(waitTimer4.seconds() >= waitTime4) {
 
-                        rotate_pos = 4;
+                        rotate_pos = 1;
                         robot.bendwrist.setPosition(.682);
                         robot.lflap.setPosition(LFLAPDOWN);
                         robot.rflap.setPosition(RFLAPDOWN);
@@ -298,7 +301,7 @@ public class coolTele extends LinearOpMode {
 
                         robot.lflap.setPosition(LFLAPDOWN);
                         robot.rflap.setPosition(RFLAPDOWN);
-                        rotate_pos = 2;
+                        rotate_pos = 3;
                         robot.bendwrist.setPosition(.151);
                         robot.frontclaw.setPosition(FRONTRELEASE);
                         robot.rearclaw.setPosition(REARRELEASE);
@@ -334,7 +337,6 @@ public class coolTele extends LinearOpMode {
                     break;
                     case INTAKE:
                     if(waitTimer6.seconds() >= waitTime6) {
-                        robot.rotwrist.setPosition(.497);
                        // robot.drop.setPosition(.89);
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
@@ -408,9 +410,9 @@ public class coolTele extends LinearOpMode {
 
 
 
-//            if (gamepad2.circle) { //grab rear
-//                robot.rearclaw.setPosition(REARGRAB);
-//            }
+            if (gamepad2.circle) { //grab rear
+               rotate_pos = 5;
+            }
 //            if (gamepad2.square) { //grab front
 //                robot.frontclaw.setPosition(FRONTGRAB);
 //            }
@@ -423,9 +425,9 @@ public class coolTele extends LinearOpMode {
 
             if (gamepad2.right_bumper){
                 //toggle
-                if (rotate_pos<5) {
+                if (rotate_pos>-1) {
                     toggleTimer.reset();
-                    rotate_pos++;
+                    rotate_pos--;
                 }
                 while (opModeIsActive()
                         && (toggleTimer.seconds() < toggleTime)
@@ -436,9 +438,9 @@ public class coolTele extends LinearOpMode {
             } else if (gamepad2.left_bumper){
                 //toggle L
 
-                if (rotate_pos >1) {
+                if (rotate_pos <6) {
                     toggleTimer.reset();
-                    rotate_pos--;
+                    rotate_pos++;
                 }
                 while (opModeIsActive()
                         && (toggleTimer.seconds() < toggleTime)
@@ -507,23 +509,32 @@ public class coolTele extends LinearOpMode {
 
 
 
-
+            if (rotate_pos == -1 ) {
+                robot.rotwrist.setPosition(.985);
+            }
                 //start stack
+            if (rotate_pos == 0 ) {
+                robot.rotwrist.setPosition(.89);
+            }
                if (rotate_pos == 1 ) {
-                    robot.rotwrist.setPosition(.53);
+                    robot.rotwrist.setPosition(.7);
+
                 }
                  if (rotate_pos == 2) {
-                    robot.rotwrist.setPosition(.497); // intake
+                    robot.rotwrist.setPosition(.575); // intake
                 }
                 if (rotate_pos ==3){
-                    robot.rotwrist.setPosition(.4655); // outtake
+                    robot.rotwrist.setPosition(.41); // outtake
                 }
                  if (rotate_pos == 4){
-                    robot.rotwrist.setPosition(.435);
+                    robot.rotwrist.setPosition(.32);
                 }
                 if (rotate_pos == 5){
-                    robot.rotwrist.setPosition(.4);
+                    robot.rotwrist.setPosition(.15);
                 }
+            if (rotate_pos == 6){
+                robot.rotwrist.setPosition(.001);
+            }
 
 //            if (rotate_pos == 1 ) {
 //                robot.rotwrist.setPosition(.4);
