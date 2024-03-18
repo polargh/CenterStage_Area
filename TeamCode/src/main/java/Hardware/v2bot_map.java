@@ -39,6 +39,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor; //REV
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import com.qualcomm.robotcore.hardware.LED;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 /**
  * This is NOT an opmode.
@@ -88,6 +90,10 @@ public class v2bot_map {
     //    public Servo ldrop;
     public WebcamName webcam;
     public DistanceSensor intakedis;
+    public DigitalChannel lredLED;
+    public DigitalChannel lgreenLED;
+    public DigitalChannel rredLED;
+    public DigitalChannel rgreenLED;
 //    public DcMotor rin = null;
 //    public DcMotor lin = null;
 
@@ -125,6 +131,16 @@ public class v2bot_map {
         lflap = hwMap.get(Servo.class, "lflap");
         rflap = hwMap.get(Servo.class, "rflap");
         intakedis = hwMap.get(DistanceSensor.class, "dispixel");
+        drone = hwMap.get(Servo.class, "drone");
+
+        lredLED = hwMap.get(DigitalChannel.class, "lred");
+        lgreenLED = hwMap.get(DigitalChannel.class, "lgreen");
+        rredLED = hwMap.get(DigitalChannel.class, "rred");
+        rgreenLED= hwMap.get(DigitalChannel.class, "rgreen");
+        lredLED.setMode(DigitalChannel.Mode.OUTPUT);
+        lgreenLED.setMode(DigitalChannel.Mode.OUTPUT);
+        rredLED.setMode(DigitalChannel.Mode.OUTPUT);
+        rgreenLED.setMode(DigitalChannel.Mode.OUTPUT);
 
 
 //        webcam = hwMap.get(WebcamName.class, "Webcam 1");

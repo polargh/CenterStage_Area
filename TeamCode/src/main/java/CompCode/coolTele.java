@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.LED;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 //import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -46,10 +48,10 @@ public class coolTele extends LinearOpMode {
     double dropstack = 5;
     double stackpos = 0;
 
-    double FRONTGRAB = .47;
-    double REARGRAB = .475;
-    double FRONTRELEASE = .3;
-    double REARRELEASE = .64;
+    double FRONTGRAB = .335;
+    double REARGRAB = .398;
+    double FRONTRELEASE = .477;
+    double REARRELEASE = .231;
 
 //    double FRONTRELEASE = .477; close to grab pos
 //    double REARRELEASE = .231;
@@ -115,6 +117,7 @@ public class coolTele extends LinearOpMode {
     double waitTime7 = .4;
     double waitTime8 = .25;
     double waitTime10 = .4;
+    double waitTime11 = .4;
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -128,6 +131,7 @@ public class coolTele extends LinearOpMode {
     ElapsedTime waitTimer8 = new ElapsedTime();
 
     ElapsedTime waitTimer10 = new ElapsedTime();
+    ElapsedTime waitTimer11 = new ElapsedTime();
 
     ElapsedTime runtime = new ElapsedTime();
 //
@@ -204,8 +208,8 @@ public class coolTele extends LinearOpMode {
         // robot.drop.setPosition(.89);
         robot.raxon.setPosition(.66);
         robot.laxon.setPosition(.34);
-        robot.bendwrist.setPosition(.1535);
-      //  robot.drone.setPosition(.5);
+        robot.bendwrist.setPosition(.1552);
+        robot.drone.setPosition(.5);
 
         waitForStart();
 
@@ -243,7 +247,7 @@ public class coolTele extends LinearOpMode {
                     if(waitTimer4.seconds() >= waitTime4) {
 
                         rotate_pos = 1;
-                        robot.bendwrist.setPosition(.705);
+                        robot.bendwrist.setPosition(.733);
 
 
 
@@ -340,7 +344,7 @@ public class coolTele extends LinearOpMode {
                        // robot.drop.setPosition(.89);
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
-                        robot.bendwrist.setPosition(.153);
+                        robot.bendwrist.setPosition(.1595);
 
                         intake = elbowDownState.AFTERINTAKE;
                         waitTimer8.reset();
@@ -375,7 +379,7 @@ public class coolTele extends LinearOpMode {
                     if(waitTimer6.seconds() >= waitTime6) {
                         robot.raxon.setPosition(.783);
                         robot.laxon.setPosition(.217);
-                        robot.bendwrist.setPosition(.159);
+                        robot.bendwrist.setPosition(.161);
                       //  robot.drop.setPosition(.63);
                         waitTimer10.reset();
                         claw = grab.PICKPIXELS;
@@ -403,7 +407,7 @@ public class coolTele extends LinearOpMode {
 
 
 
-            if (gamepad1.triangle) { //grab rear
+            if (gamepad1.cross) { //grab rear
                 robot.lflap.setPosition(LFLAPUP);
                 robot.rflap.setPosition(RFLAPUP);
             }
@@ -476,7 +480,7 @@ public class coolTele extends LinearOpMode {
 
             }
             if (intakepos == 4 ) {
-                drop_pos = .595;
+                drop_pos = .5795;
             }
             if (intakepos == 3 ) {
                drop_pos = .63;
@@ -497,7 +501,8 @@ public class coolTele extends LinearOpMode {
             } else if (gamepad1.left_trigger > 0) { //in
                 //servospeed = 0.5;
                 robot.drop.setPosition(drop_pos);
-
+//               robot.lflap.setPosition(LFLAPDOWN);
+//                robot.rflap.setPosition(RFLAPDOWN);
                 robot.intake.setPower(4);
 
             }else  {
@@ -521,10 +526,10 @@ public class coolTele extends LinearOpMode {
 
                 }
                  if (rotate_pos == 2) {
-                    robot.rotwrist.setPosition(.575); // intake
+                    robot.rotwrist.setPosition(.5375); //
                 }
                 if (rotate_pos ==3){
-                    robot.rotwrist.setPosition(.41); // outtake
+                    robot.rotwrist.setPosition(.41); //
                 }
                  if (rotate_pos == 4){
                     robot.rotwrist.setPosition(.32);
@@ -610,28 +615,39 @@ public class coolTele extends LinearOpMode {
 //
 //            }
             if (gamepad1.circle) { //drone
-                drone_target = 1000; //bottom
+                drone_target = 950; //bottom
             }
 //                else if (gamepad2.dpad_up) {
 //                    drone_target = 3600; //medium
 //                }
-            if (gamepad2.right_trigger >0) {
-
-                drone_target = robot.climb.getCurrentPosition() + 150;
+            if(gamepad1.triangle) {
+                robot.drone.setPosition(.8);
             }
-            if (gamepad2.left_trigger >0 && robot.climb.getCurrentPosition() < 5725) {
+            if (gamepad2.right_trigger >0 ) {
 
                 drone_target = robot.climb.getCurrentPosition() - 150;
+            }
+            if (gamepad2.left_trigger >0 && robot.climb.getCurrentPosition() < 2500) {
+
+                drone_target = robot.climb.getCurrentPosition() + 150;
             }
             if (gamepad1.square) {
                 drone_target = 2500;
             }
-            if (robot.intakedis.getDistance(DistanceUnit.CM) > .1 && robot.intakedis.getDistance(DistanceUnit.CM) < 1.9 && waitTimer1.seconds() >= waitTime1) {
+            if (robot.intakedis.getDistance(DistanceUnit.CM) > .25 && robot.intakedis.getDistance(DistanceUnit.CM) < 1 && waitTimer11.seconds() >= waitTime11) {
 
                 telemetry.addData("Pixel Status", "2 PIXELS");
-            } else{
+                robot.lgreenLED.setState(true);
+                robot.lredLED.setState(false);
+                robot.rgreenLED.setState(true);
+                robot.rredLED.setState(false);
 
+            } else{
                 telemetry.addData("Pixel Status", "NO PIXELS");
+                robot.lgreenLED.setState(false);
+                robot.lredLED.setState(true);
+                robot.rgreenLED.setState(false);
+                robot.rredLED.setState(true);
             }
 
             robot.climb.setPower(3);

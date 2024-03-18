@@ -56,11 +56,11 @@ public class Intake {
         intake.setPower(.8);
     }
     public void intakewhile3() {
-        drop.setPosition(.587);
+        drop.setPosition(.57945);
         intake.setPower(1);
     }
     public void stopintake() {
-        drop.setPosition(.89);
+        drop.setPosition(.95);
         intake.setPower(0);
     }
 
@@ -70,24 +70,38 @@ public class Intake {
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
-            intake.setPower(-.1);
+            intake.setPower(-.5);
         }
         intake.setPower(0);
         runtime.reset();
     }
     public void outtake2nd(double sec) {
-        drop.setPosition(.89);
+        drop.setPosition(.95);
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
-            intake.setPower(-.1);
+            intake.setPower(-.5);
         }
         intake.setPower(0);
         runtime.reset();
     }
+    public void outtake2ndon() {
+        drop.setPosition(.95);
+
+
+            intake.setPower(-.1);
+
+    }
+    public void outtake2ndaud() {
+        drop.setPosition(.95);
+
+
+        intake.setPower(-.45);
+
+    }
 
     public void score() {
-       drop.setPosition(.466);
+       drop.setPosition(.6);
     }
 
 

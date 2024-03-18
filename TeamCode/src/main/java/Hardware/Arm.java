@@ -20,10 +20,11 @@ public class Arm {
     public Servo frontclaw;
     public Servo lflap;
     public Servo rflap;
-    double FRONTGRAB = .2729;
-    double REARGRAB = .413;
-    double FRONTRELEASE = .472;
-    double REARRELEASE = .235;
+    double FRONTGRAB = .335;
+    double REARGRAB = .398;
+    double FRONTRELEASE = .477;
+    double REARRELEASE = .231;
+
 
     double LFLAPUP = .465;
     double LFLAPDOWN = .57425;
@@ -76,7 +77,7 @@ public class Arm {
 
 
     public void intakePos(){
-       rotwrist.setPosition(.497);
+       rotwrist.setPosition(.41);
         drop.setPosition(.63);
         raxon.setPosition(.64);
         laxon.setPosition(.36);
@@ -86,8 +87,21 @@ public class Arm {
 
 
     }
+    public void intakePostele(){
+        rotwrist.setPosition(.41);
+        drop.setPosition(.63);
+
+
+        rearclaw.setPosition(REARRELEASE);
+        frontclaw.setPosition(FRONTRELEASE);
+        raxon.setPosition(.66);
+        laxon.setPosition(.34);
+        bendwrist.setPosition(.1595);
+
+
+    }
     public void init(){
-        rotwrist.setPosition(.497);
+        rotwrist.setPosition(.41);
         drop.setPosition(.89);
         raxon.setPosition(.64);
         laxon.setPosition(.46);
@@ -108,7 +122,7 @@ public class Arm {
         raxon.setPosition(.61);
         laxon.setPosition(.39);
         bendwrist.setPosition(.153);
-        rotwrist.setPosition(.497);
+        rotwrist.setPosition(.41);
         rearclaw.setPosition(REARRELEASE);
         frontclaw.setPosition(FRONTRELEASE);
         drop.setPosition(.4825);
@@ -121,7 +135,7 @@ public class Arm {
 
     }
     public void downpixel(){ //almost grab
-        rotwrist.setPosition(.497);
+        rotwrist.setPosition(.41);
        raxon.setPosition(.783);
        laxon.setPosition(.217);
        bendwrist.setPosition(.159);
@@ -144,7 +158,7 @@ public class Arm {
 //        drop.setPosition(.95);
 //        raxon.setPosition(.3);
 //        laxon.setPosition(.7);
-        rotwrist.setPosition(.4);
+        rotwrist.setPosition(.15);
     }
     public void outyellowp1(){ //almost grab
         // lift.moveToTarget(Lift.LiftPos.LOW_AUTO);

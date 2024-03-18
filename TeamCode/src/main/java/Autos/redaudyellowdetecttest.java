@@ -4,29 +4,44 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import Hardware.Arm;
+import Hardware.CenterstageDetector;
 import Hardware.Intake;
 import Hardware.Lift;
+import Hardware.Yellowpixelpipe;
 import Hardware.redAudiencePipeline;
 
-//import com.acmerobotics.roadrunner.geometry.Pose2d;
+//public class redaudyellowdetecttest {
+@Autonomous(name="Red2+1audpixeltest", group="Auto")
+public class redaudyellowdetecttest extends LinearOpMode {
+    private static final boolean USE_WEBCAM = true;
 
 
-//import com.acmerobotics.roadrunner.trajectoryBuilder;
+    private Yellowpixelpipe yellowpipe;
 
-@Disabled
-@Autonomous(name="Redaud", group="Auto")
-public class Stage_RED extends LinearOpMode {
+    /**
+     * The variable to store our instance of the TensorFlow Object Detection processor.
+     */
+    private redAudiencePipeline propdetect;
+
+    /**
+     * The variable to store our instance of the vision portal.
+     */
+    private VisionPortal myVisionPortal;
     SampleMecanumDrive drive;
+
     OpenCvCamera webcam;
     Lift lift;
     Arm arm;
@@ -53,7 +68,8 @@ public class Stage_RED extends LinearOpMode {
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-       redAudiencePipeline detector = new redAudiencePipeline(telemetry);
+        redAudiencePipeline detector = new redAudiencePipeline(telemetry);
+        Yellowpixelpipe yellow = new Yellowpixelpipe(telemetry);
         //START_POSITION position = new CenterstageDetector(telemetry);
         webcam.setPipeline(detector);
         //private detector.getLocation location = detector.getLocation().LEFT;
@@ -74,7 +90,7 @@ public class Stage_RED extends LinearOpMode {
 
         Pose2d startPose = new Pose2d(-40, -63.42, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
-       // Pose2d rightintakepos = new Pose2d(-40, -63.42, Math.toRadians(-165));
+        // Pose2d rightintakepos = new Pose2d(-40, -63.42, Math.toRadians(-165));
 
 
         Trajectory left = drive.trajectoryBuilder(startPose)
@@ -190,7 +206,7 @@ public class Stage_RED extends LinearOpMode {
                 .build();
         waitForStart();
         if (isStopRequested()) return;
-       redAudiencePipeline.Location location = detector.getLocation();
+        redAudiencePipeline.Location location = detector.getLocation();
         switch (location) {
             case LEFT: //left
                 drive.followTrajectory(left);
@@ -211,19 +227,20 @@ public class Stage_RED extends LinearOpMode {
                 //drive.turn(Math.toRadians(-67.5));
                 drive.followTrajectory(right_driveintake);
                 intake.intakewhile();
-               // setIntake();
+                // setIntake();
                 drive.followTrajectory(right_intakee);
                 drive.followTrajectory(right_straight);
                 sleep(400);
                 intake.stopintake();
                 grab();
 
-               // setIntake();
+                // setIntake();
                 drive.followTrajectory(right_truss);
                 drive.followTrajectory(right_strafe_);
                 drive.followTrajectory(right_under_truss);
                 drive.followTrajectory(rightat_back);
                 intake.score();
+                webcam.setPipeline(yellow);
                 arm.drop.setPosition(466);
                 //arm.out();
                 lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
@@ -241,7 +258,7 @@ public class Stage_RED extends LinearOpMode {
 //                drive.followTrajectory(right_drop);
 //                scoreLow(deposit_right, away_right);
 //                drive.followTrajectory(after_right);
-               // drive.followTrajectory(right_park);
+                // drive.followTrajectory(right_park);
                 break;
             case RIGHT: //middle
                 drive.followTrajectory(middle);
@@ -252,7 +269,7 @@ public class Stage_RED extends LinearOpMode {
 //                drive.followTrajectory(drop_middle);
 //                scoreLow(deposit_middle, away_middle);
 //                drive.followTrajectory(middle_after);
-               // drive.followTrajectory(middle_park);
+                // drive.followTrajectory(middle_park);
                 break;
 
         }
@@ -275,7 +292,39 @@ public class Stage_RED extends LinearOpMode {
         arm.aftergrab();//grab
 
     }
+    private void initDoubleVision() {
+        // -----------------------------------------------------------------------------------------
+        // AprilTag Configuration
+        // -----------------------------------------------------------------------------------------
+
+//        yellowpipe = new Yellowpixelpipe.Builder();
+//                .build();
+//
+//        // -----------------------------------------------------------------------------------------
+//        // TFOD Configuration
+//        // -----------------------------------------------------------------------------------------
+//
+//        tfod = new TfodProcessor.Builder()
+//                .build();
+//
+//        // -----------------------------------------------------------------------------------------
+//        // Camera Configuration
+//        // -----------------------------------------------------------------------------------------
+//
+//        if (USE_WEBCAM) {
+//            myVisionPortal = new VisionPortal.Builder()
+//                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+//                    .addProcessors(yellowpipe, aprilTag)
+//                    .build();
+//        } else {
+//            myVisionPortal = new VisionPortal.Builder()
+//                    .setCamera(BuiltinCameraDirection.BACK)
+//                    .addProcessors(yellowpipe, aprilTag)
+//                    .build();
+
+    }   // end initDoubleVision()
 }
+
 
 
 

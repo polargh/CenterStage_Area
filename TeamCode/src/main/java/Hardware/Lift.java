@@ -23,6 +23,7 @@ public class Lift {
         MID,
         MIDHIGH,
         LOW_AUTO,
+        LOW_AUTOAUD,
         HIGH,
         MANUAL
     }
@@ -34,7 +35,8 @@ public class Lift {
     public static int MID_HIGH_POS = 2550;
 
     public static int HIGH_POS = 3100;
-    public static int LOW_AUTO =180;
+    public static int LOW_AUTO =170;
+    public static int LOW_AUTOaud =200;
 
 
 //    int MANUAL = larm.getCurrentPosition() +20;
@@ -130,6 +132,9 @@ public class Lift {
 
             case LOW_AUTO:
                 encoderTarget = LOW_AUTO;
+                break;
+            case LOW_AUTOAUD:
+                encoderTarget = LOW_AUTOaud;
                 break;
             case MANUAL:
                 encoderTarget = larm.getCurrentPosition() + 20;
