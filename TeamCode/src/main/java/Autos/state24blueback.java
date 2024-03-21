@@ -36,7 +36,7 @@ public class state24blueback extends LinearOpMode {
     Intake intake;
     double LFLAPUP = .465;
     double LFLAPDOWN = .57;
-    double RFLAPUP = .5;
+    double RFLAPUP = .512;
     double RFLAPDOWN = .4309;
     double waitTime1 = 1.39;
     double waitTime2 = 0.6;

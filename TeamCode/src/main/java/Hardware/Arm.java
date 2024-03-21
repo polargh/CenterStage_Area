@@ -28,7 +28,7 @@ public class Arm {
 
     double LFLAPUP = .465;
     double LFLAPDOWN = .57425;
-    double RFLAPUP = .5;
+    double RFLAPUP = .512;
     double RFLAPDOWN = .4309;
 
     Lift lift;

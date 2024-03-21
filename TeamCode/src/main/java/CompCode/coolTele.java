@@ -57,7 +57,7 @@ public class coolTele extends LinearOpMode {
 //    double REARRELEASE = .231;
     double LFLAPUP = .465;
     double LFLAPDOWN = .57;
-    double RFLAPUP = .5;
+    double RFLAPUP = .512;
     double RFLAPDOWN = .4309;
 
 
@@ -118,6 +118,8 @@ public class coolTele extends LinearOpMode {
     double waitTime8 = .25;
     double waitTime10 = .4;
     double waitTime11 = .4;
+    double waitTime12 = .45; //dronelaunch
+    double waitTime13 = .45; //climb
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -133,6 +135,8 @@ public class coolTele extends LinearOpMode {
     ElapsedTime waitTimer10 = new ElapsedTime();
     ElapsedTime waitTimer11 = new ElapsedTime();
 
+    ElapsedTime waitTimer12 = new ElapsedTime();
+    ElapsedTime waitTimer13 = new ElapsedTime();
     ElapsedTime runtime = new ElapsedTime();
 //
 
@@ -523,7 +527,6 @@ public class coolTele extends LinearOpMode {
             }
                if (rotate_pos == 1 ) {
                     robot.rotwrist.setPosition(.7);
-
                 }
                  if (rotate_pos == 2) {
                     robot.rotwrist.setPosition(.5375); //
@@ -615,24 +618,34 @@ public class coolTele extends LinearOpMode {
 //
 //            }
             if (gamepad1.circle) { //drone
-                drone_target = 950; //bottom
+                waitTimer12.reset();
+                while(waitTimer12.seconds() < waitTime12) {
+                    robot.climb.setPower(1);
+                }
+                robot.climb.setPower(0);
             }
-//                else if (gamepad2.dpad_up) {
-//                    drone_target = 3600; //medium
-//                }
+//
             if(gamepad1.triangle) {
                 robot.drone.setPosition(.8);
             }
-            if (gamepad2.right_trigger >0 ) {
+            if (gamepad2.right_trigger > 0 ) {
 
-                drone_target = robot.climb.getCurrentPosition() - 150;
-            }
-            if (gamepad2.left_trigger >0 && robot.climb.getCurrentPosition() < 2500) {
+                robot.climb.setPower(-1);
+            }else if (gamepad2.left_trigger >0 ) {
 
-                drone_target = robot.climb.getCurrentPosition() + 150;
+                    robot.climb.setPower(1);
+
+               // drone_target = robot.climb.getCurrentPosition() + 150;
+            } else {
+                robot.climb.setPower(0);
             }
             if (gamepad1.square) {
-                drone_target = 2500;
+              //  drone_target = 2500;
+                waitTimer13.reset();
+                while(waitTimer13.seconds() < waitTime13) {
+                    robot.climb.setPower(1);
+                }
+                robot.climb.setPower(0);
             }
             if (robot.intakedis.getDistance(DistanceUnit.CM) > .25 && robot.intakedis.getDistance(DistanceUnit.CM) < 1 && waitTimer11.seconds() >= waitTime11) {
 
@@ -650,8 +663,8 @@ public class coolTele extends LinearOpMode {
                 robot.rredLED.setState(true);
             }
 
-            robot.climb.setPower(3);
-            robot.climb.setTargetPosition(drone_target);
+//            robot.climb.setPower(3);
+//            robot.climb.setTargetPosition(drone_target);
 
                telemetry.addData("rotate#:",rotate_pos);
             telemetry.addData("intake#:",intakepos);

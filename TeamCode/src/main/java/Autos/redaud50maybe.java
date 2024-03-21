@@ -27,7 +27,7 @@ import Hardware.redAudiencePipeline;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Red_AUD_2+3_TRUSS", group="Auto")
+@Autonomous(name="Red_AUD_2+1_TRUSS", group="Auto")
 public class redaud50maybe extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;
@@ -46,7 +46,7 @@ public class redaud50maybe extends LinearOpMode {
     double waitTime7 = 2;
     double waitTime8 = .5;
     double waitTime9 = .75;
-    double waitTime10 = 2.6;
+    double waitTime10 = 1.25;
     double waitTime11 = .5;
     private MultipleTelemetry tl;
 
@@ -111,11 +111,11 @@ public class redaud50maybe extends LinearOpMode {
 
 
         Trajectory left = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-45.5, -40), Math.toRadians(90))
+                .splineTo(new Vector2d(-45.99, -40), Math.toRadians(90))
                 .build();
 
         Trajectory middle = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-37.5, -36.5), Math.toRadians(90))
+                .splineTo(new Vector2d(-36.5, -35.99), Math.toRadians(90))
                 .build();
 
 
@@ -133,7 +133,7 @@ public class redaud50maybe extends LinearOpMode {
                 .build();
 
         Trajectory left_intakeforward = drive.trajectoryBuilder(leftatintake.end())
-                .back(6.09, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .back(5.5, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory leftintakeback1 = drive.trajectoryBuilder(left_intakeforward.end())
@@ -147,7 +147,7 @@ public class redaud50maybe extends LinearOpMode {
                 .build();
         TrajectorySequence leftbackdrp= drive.trajectorySequenceBuilder(lefttruss.end())
                 .splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
-                .splineTo(new Vector2d(42.52, -30.35), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.52, -25.25), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
@@ -163,7 +163,7 @@ public class redaud50maybe extends LinearOpMode {
 //                .splineTo(new Vector2d(41.24, -34), Math.toRadians(0.00))
 //                .build();
         Trajectory deposit_left = drive.trajectoryBuilder(leftbackdrp.end())
-                .forward(5.9)
+                .forward(6.4)
                 .build();
         Trajectory away_left = drive.trajectoryBuilder(deposit_left.end())
                 .back(4.5)
@@ -172,74 +172,78 @@ public class redaud50maybe extends LinearOpMode {
                 .strafeLeft(15)
                 .build();
 
-        Trajectory backup_right = drive.trajectoryBuilder(right.end())
-                .back(13)
-                .build();
 
 
-        Trajectory right_driveintake = drive.trajectoryBuilder(backup_right.end())
-                .lineToLinearHeading(new Pose2d(-55, -36.1, Math.toRadians(0.00)))
-                .build();
-        Trajectory right_straight = drive.trajectoryBuilder(right_driveintake.end())
-                .back(4.055)
-                .build();
-        Trajectory right_intakee = drive.trajectoryBuilder(right_driveintake.end())
-                .back(3)
-                .build();
-        Trajectory right_truss = drive.trajectoryBuilder(right_straight.end())
-                .lineToLinearHeading(new Pose2d(-42.5, -50, Math.toRadians(0.00)))
-                .build();
-        Trajectory right_strafe_ = drive.trajectoryBuilder(right_truss.end())
-                .strafeRight(8.35)
-                .build();
 
-        Trajectory right_under_truss = drive.trajectoryBuilder(right_strafe_.end())
-                .forward(50)
-                .build();
-        Trajectory rightat_back = drive.trajectoryBuilder(right_under_truss.end())
-                .lineToLinearHeading(new Pose2d(46, -41.2, Math.toRadians(0.00)))
-                .build();
-        Trajectory rightapproach = drive.trajectoryBuilder(rightat_back.end())
-                .forward(4.65)
-                .build();
-        Trajectory away_right = drive.trajectoryBuilder(rightapproach.end())
-                .back(5.8)
-                .build();
-        Trajectory threeright = drive.trajectoryBuilder(away_right.end())
-                .strafeRight(16.5)
-                .build();
-        Trajectory backstraightright = drive.trajectoryBuilder(threeright.end())
-                .back(45)
-                .build();
-        Trajectory right_park = drive.trajectoryBuilder(backstraightright.end())
-                .strafeRight(16)
-                .build();
+        // hereeeeeeeeeeee
         Trajectory backup_middle = drive.trajectoryBuilder(middle.end())
-                .back(2)
+                .back(7.5)
                 .build();
-        Trajectory strafe_middle = drive.trajectoryBuilder(backup_middle.end())
-                .strafeLeft(16)
+        Trajectory middleatintake = drive.trajectoryBuilder(backup_middle.end())
+                .lineToLinearHeading(new Pose2d(-56.2, -41, Math.toRadians(-25.00)))
                 .build();
-        Trajectory stage_middle = drive.trajectoryBuilder(strafe_middle.end())
-                .splineTo(new Vector2d(-42.88, -10.68), Math.toRadians(0.00))
+
+        Trajectory middle_intakeforward = drive.trajectoryBuilder(middleatintake.end())
+                .back(4.93, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        Trajectory straight_middle = drive.trajectoryBuilder(stage_middle.end())
-                .forward(57)
+        Trajectory middleintakeback1 = drive.trajectoryBuilder(middle_intakeforward.end())
+                .forward(7)
                 .build();
-        Trajectory drop_middle = drive.trajectoryBuilder(straight_middle.end())
-                .splineTo(new Vector2d(39.17, -34.4), Math.toRadians(0.00))
+
+        Trajectory middletruss= drive.trajectoryBuilder(middleintakeback1.end())
+                .splineTo(new Vector2d(-29.48, -57.9), Math.toRadians(0.00))
+                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
-        Trajectory deposit_middle = drive.trajectoryBuilder(drop_middle.end())
-                .forward(5.8)
+        TrajectorySequence middlebackdrp= drive.trajectorySequenceBuilder(middletruss.end())
+                .splineToConstantHeading(new Vector2d(21.44, -56.799), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.52, -31.1), Math.toRadians(0.00))
+                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
+                .build();
+
+//
+        Trajectory deposit_middle = drive.trajectoryBuilder(middlebackdrp.end())
+                .forward(6.601)
                 .build();
         Trajectory away_middle = drive.trajectoryBuilder(deposit_middle.end())
-                .back(5.5)
+                .back(4.5)
                 .build();
-        Trajectory middle_after = drive.trajectoryBuilder(away_middle.end())
-                .strafeLeft(25)
+
+        Trajectory backup_right = drive.trajectoryBuilder(right.end())
+                .back(7.5)
                 .build();
-        Trajectory middle_park = drive.trajectoryBuilder(middle_after.end())
-                .forward(7.7)
+        Trajectory rightatintake = drive.trajectoryBuilder(backup_right.end())
+                .lineToLinearHeading(new Pose2d(-56.2, -41, Math.toRadians(-25.00)))
+                .build();
+
+        Trajectory right_intakeforward = drive.trajectoryBuilder(rightatintake.end())
+                .back(5.77, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory rightintakeback1 = drive.trajectoryBuilder(right_intakeforward.end())
+                .forward(7)
+                .build();
+
+        Trajectory righttruss= drive.trajectoryBuilder(rightintakeback1.end())
+                .splineTo(new Vector2d(-29.48, -57.9), Math.toRadians(0.00))
+                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
+                .build();
+        TrajectorySequence rightbackdrp= drive.trajectorySequenceBuilder(righttruss.end())
+                .splineToConstantHeading(new Vector2d(21.44, -56.2), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(0.00))
+                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
+                .build();
+
+//
+        Trajectory deposit_right = drive.trajectoryBuilder(rightbackdrp.end())
+                .forward(6.955)
+                .build();
+        Trajectory away_right = drive.trajectoryBuilder(deposit_right.end())
+                .back(4.5)
                 .build();
         waitForStart();
         if (isStopRequested()) return;
@@ -326,8 +330,9 @@ public class redaud50maybe extends LinearOpMode {
                                 waitTimer10.reset();
                                 state = 6;
                             }
+                            break;
                         case 6:
-                            if (!drive.isBusy()) {
+                            if (waitTimer10.seconds() >= waitTime10) {
 
                                 pos = Lift.LiftPos.LOW_AUTOAUD;
 
@@ -338,7 +343,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
                         case 7:
                             if (waitTimer4.seconds() >= waitTime4) {
-                                arm.drop.setPosition(.63);
+                                arm.drop.setPosition(.65);
                                 arm.raxon.setPosition(.3);
                                 arm.laxon.setPosition(.7);
 
@@ -349,11 +354,9 @@ public class redaud50maybe extends LinearOpMode {
                             break;
                         case 8:
                             if (waitTimer6.seconds() >= waitTime6) {
-                                arm.rotwrist.setPosition(.985);
+                                arm.rotwrist.setPosition(.89);
                                 arm.bendwrist.setPosition(.705);
-                                arm.drop.setPosition(.95);
-
-
+                                arm.drop.setPosition(.89);
                                 //waitTimer7.reset();
                                 state = 9;
                             }
@@ -388,55 +391,291 @@ public class redaud50maybe extends LinearOpMode {
 
 
                 break;
-            case NOT_FOUND: //right
-                drive.followTrajectory(right);
-                drive.followTrajectory(backup_right);
-                //drive.turn(Math.toRadians(-67.5));
-                drive.followTrajectory(right_driveintake);
-                intake.intakewhile();
-                // setIntake();
-                drive.followTrajectory(right_intakee);
-                drive.followTrajectory(right_straight);
-                sleep(400);
-                intake.stopintake();
-                grab();
+            case RIGHT: //right
+                int state1 = 0; ///middle
+                boolean done1 = false;
+                while (opModeIsActive() && !isStopRequested() && !done1) {
+                    switch (state1) {
+                        //middle
 
-                // setIntake();
-                drive.followTrajectory(right_truss);
-                drive.followTrajectory(right_strafe_);
-                drive.followTrajectory(right_under_truss);
-                drive.followTrajectory(rightat_back);
-                intake.score();
-                arm.drop.setPosition(466);
-                //arm.out();
-                lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
-                drive.followTrajectory(rightapproach);
-                arm.release();
-                sleep(200);
-                drive.followTrajectory(away_right);
-//                arm.intakePosafterscore();
-//                lift.moveToTarget(Lift.LiftPos.START);
-                drive.followTrajectory(threeright);
-                drive.followTrajectory(backstraightright);
+                        case 0:
+                            pos = Lift.LiftPos.START;
+                            drive.followTrajectory(middle);
+                            drive.followTrajectory(backup_middle);
+                            drive.followTrajectoryAsync(middleatintake);
+                            intake.intakewhile5();
+                            //  arm.drop.setPosition(.63)
+                            waitTimer1.reset();
+                            state1 = 1;
+                            break;
+                        case 1:
+                            if (!drive.isBusy() ) {
+                                drive.followTrajectory(middle_intakeforward);
 
-//                drive.followTrajectory(right_stage);
-//                drive.followTrajectory(right_straight);
-//                drive.followTrajectory(right_drop);
-//                scoreLow(deposit_right, away_right);
-//                drive.followTrajectory(after_right);
-                // drive.followTrajectory(right_park);
+                                waitTimer1.reset();
+                                state1 = 10;
+                            }
+                            break;
+                        case 10:
+                            if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
+
+                                intake.outtake(.3);
+                                intake.intake3(.7);
+                                intake.outtake2ndaud();
+                                drive.followTrajectoryAsync(middleintakeback1);
+                                arm.release();
+                                arm.flapsup();
+
+                                state1 = 2;
+                            }
+                            break;
+                        case 2:
+                            if (!drive.isBusy()) {
+                                intake.stopintake();
+                                arm.drop.setPosition(.9);
+                                drive.followTrajectoryAsync(middletruss);
+                                arm.raxon.setPosition(.783);
+                                arm.laxon.setPosition(.217);
+                                arm.bendwrist.setPosition(.159);
+                                waitTimer2.reset();
+
+
+                                state1 = 3;
+                            }
+                            break;
+                        case 3:
+                            if (waitTimer2.seconds() >= waitTime2) {
+                                arm.grab();
+
+                                waitTimer3.reset();
+                                state1 = 4;
+                            }
+                            break;
+
+                        case 4:
+                            if (!drive.isBusy() && waitTimer3.seconds() >= waitTime3) {
+
+                                arm.aftergrab();
+
+                                waitTimer4.reset();
+                                state1 = 5;
+                            }
+                            break;
+                        case 5:
+                            if (waitTimer4.seconds() >= waitTime4) {
+
+                                arm.bendwrist.setPosition(.148);
+                                drive.followTrajectorySequenceAsync(middlebackdrp);
+
+                                waitTimer10.reset();
+                                state1 = 6;
+                            }
+                            break;
+                        case 6:
+                            if (waitTimer10.seconds() >= waitTime10) {
+
+                                pos = Lift.LiftPos.LOW_AUTOAUD;
+
+
+                                waitTimer4.reset();
+                                state1 = 7;
+                            }
+                            break;
+                        case 7:
+                            if (waitTimer4.seconds() >= waitTime4) {
+                                arm.drop.setPosition(.63);
+                                arm.raxon.setPosition(.3);
+                                arm.laxon.setPosition(.7);
+
+
+                                waitTimer6.reset();
+                                state1 = 8;
+                            }
+                            break;
+                        case 8:
+                            if (waitTimer6.seconds() >= waitTime6) {
+                                arm.rotwrist.setPosition(.89);
+                                arm.bendwrist.setPosition(.705);
+                                arm.drop.setPosition(.89);
+
+
+                                //waitTimer7.reset();
+                                state1 = 9;
+                            }
+                            break;
+                        case 9:
+                            if (!drive.isBusy()) {
+                                drive.followTrajectory(deposit_middle);
+                                arm.release();
+                                drive.followTrajectory(away_middle);
+                                arm.intakePosafterscore();
+                                arm.intakePos();
+                                pos = Lift.LiftPos.START;
+
+                                waitTimer7.reset();
+                                state1 = 11;
+                            }
+                            break;
+
+                        case 11:
+                            if (waitTimer7.seconds() >= waitTime7) {
+
+
+                                done1 = true;
+                                break;
+                            }
+                    }
+                    drive.update();
+                    lift.update(pos);
+
+                }
+
+
+
                 break;
-            case RIGHT: //middle
-                drive.followTrajectory(middle);
-                drive.followTrajectory(backup_middle);
-                drive.followTrajectory(strafe_middle);
-//                drive.followTrajectory(stage_middle);
-//                drive.followTrajectory(straight_middle);
-//                drive.followTrajectory(drop_middle);
-//                scoreLow(deposit_middle, away_middle);
-//                drive.followTrajectory(middle_after);
-                // drive.followTrajectory(middle_park);
+            case  NOT_FOUND: //middle
+                int state2 = 0; ///middle
+                boolean done2 = false;
+                while (opModeIsActive() && !isStopRequested() && !done2) {
+                    switch (state2) {
+                        //middle
+
+                        case 0:
+                            pos = Lift.LiftPos.START;
+                            drive.followTrajectory(right);
+                            drive.followTrajectory(backup_right);
+                            drive.followTrajectoryAsync(rightatintake);
+                            intake.intakewhile5();
+                            //  arm.drop.setPosition(.63)
+                            waitTimer1.reset();
+                            state2 = 1;
+                            break;
+                        case 1:
+                            if (!drive.isBusy() ) {
+                                drive.followTrajectory(right_intakeforward);
+
+                                waitTimer1.reset();
+                                state2 = 10;
+                            }
+                            break;
+                        case 10:
+                            if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
+
+                                intake.outtake(.3);
+                                intake.intake3(.7);
+                                intake.outtake2ndaud();
+                                drive.followTrajectoryAsync(rightintakeback1);
+                                arm.release();
+                                arm.flapsup();
+
+                                state2 = 2;
+                            }
+                            break;
+                        case 2:
+                            if (!drive.isBusy()) {
+                                intake.stopintake();
+                                arm.drop.setPosition(.9);
+                                drive.followTrajectoryAsync(righttruss);
+                                arm.raxon.setPosition(.783);
+                                arm.laxon.setPosition(.217);
+                                arm.bendwrist.setPosition(.159);
+                                waitTimer2.reset();
+
+
+                                state2 = 3;
+                            }
+                            break;
+                        case 3:
+                            if (waitTimer2.seconds() >= waitTime2) {
+                                arm.grab();
+
+                                waitTimer3.reset();
+                                state2 = 4;
+                            }
+                            break;
+
+                        case 4:
+                            if (!drive.isBusy() && waitTimer3.seconds() >= waitTime3) {
+
+                                arm.aftergrab();
+
+                                waitTimer4.reset();
+                                state2 = 5;
+                            }
+                            break;
+                        case 5:
+                            if (waitTimer4.seconds() >= waitTime4) {
+
+                                arm.bendwrist.setPosition(.148);
+                                drive.followTrajectorySequenceAsync(rightbackdrp);
+
+                                waitTimer10.reset();
+                                state2 = 6;
+                            }
+                            break;
+                        case 6:
+                            if (waitTimer10.seconds() >= waitTime10) {
+
+                                pos = Lift.LiftPos.LOW_AUTOAUD;
+
+
+                                waitTimer4.reset();
+                                state2 = 7;
+                            }
+                            break;
+                        case 7:
+                            if (waitTimer4.seconds() >= waitTime4) {
+                                arm.drop.setPosition(.63);
+                                arm.raxon.setPosition(.3);
+                                arm.laxon.setPosition(.7);
+
+
+                                waitTimer6.reset();
+                                state2 = 8;
+                            }
+                            break;
+                        case 8:
+                            if (waitTimer6.seconds() >= waitTime6) {
+                                arm.rotwrist.setPosition(.89);
+                                arm.bendwrist.setPosition(.705);
+                                arm.drop.setPosition(.89);
+
+
+                                //waitTimer7.reset();
+                                state2 = 9;
+                            }
+                            break;
+                        case 9:
+                            if (!drive.isBusy()) {
+                                drive.followTrajectory(deposit_right);
+                                arm.release();
+                                drive.followTrajectory(away_right);
+                                arm.intakePosafterscore();
+                                arm.intakePos();
+                                pos = Lift.LiftPos.START;
+
+                                waitTimer7.reset();
+                                state2 = 11;
+                            }
+                            break;
+
+                        case 11:
+                            if (waitTimer7.seconds() >= waitTime7) {
+
+
+                                done2 = true;
+                                break;
+                            }
+                    }
+                    drive.update();
+                    lift.update(pos);
+
+                }
+
+
+
                 break;
+
 
         }
 

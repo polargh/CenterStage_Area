@@ -177,8 +177,8 @@ public class v2bot_map {
         climb.setPower(0);
         intake.setPower(0);
 
-        climb.setTargetPosition(0);
-        climb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // climb.setTargetPosition(0);
+       // climb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 //        lin.setPower(0);
 //        rin.setPower(0);
@@ -190,7 +190,7 @@ public class v2bot_map {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        climb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        climb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        lin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        rin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

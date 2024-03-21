@@ -36,7 +36,7 @@ public class Lift {
 
     public static int HIGH_POS = 3100;
     public static int LOW_AUTO =170;
-    public static int LOW_AUTOaud =200;
+    public static int LOW_AUTOaud =410;
 
 
 //    int MANUAL = larm.getCurrentPosition() +20;
