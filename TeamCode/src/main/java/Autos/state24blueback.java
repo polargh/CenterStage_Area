@@ -155,7 +155,7 @@ public class state24blueback extends LinearOpMode {
         Pose2d startPose = new Pose2d(16.62, 63.42, Math.toRadians(-90.00));
         drive.setPoseEstimate(startPose);
         Trajectory right = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(19.75, 40), Math.toRadians(-90.00), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(21.9, 40), Math.toRadians(-90.00), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory middle = drive.trajectoryBuilder(startPose)
@@ -271,9 +271,9 @@ public class state24blueback extends LinearOpMode {
 
                 .splineToConstantHeading(new Vector2d(25, 10), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(-45.9, 8), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-45.9, 9.7), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(-45.9, 9.2), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-45.9, 11.2), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -297,7 +297,7 @@ public class state24blueback extends LinearOpMode {
         TrajectorySequence left_plus4 = drive.trajectorySequenceBuilder(left_backstage2drop.end())
 //                .splineToConstantHeading(new Vector2d(-43, -6), Math.toRadians(180))
 //                .splineToConstantHeading(new Vector2d(-47, -14), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-53.05, 9))
+                .lineToConstantHeading(new Vector2d(-53.05, 9.35))
 
                 .build();
         Trajectory left_intakeforward4 = drive.trajectoryBuilder(left_plus4.end())
@@ -305,7 +305,7 @@ public class state24blueback extends LinearOpMode {
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 //                .back(13.8, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL) )
-                .splineToConstantHeading(new Vector2d(-57.9, 8), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-57.9, 11.1), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence left_intakebackward4 = drive.trajectorySequenceBuilder(left_intakeforward4.end())
@@ -336,7 +336,7 @@ public class state24blueback extends LinearOpMode {
                 .build();
         TrajectorySequence rightplus2 = drive.trajectorySequenceBuilder(away_right.end())
 
-                .splineToConstantHeading(new Vector2d(25, 13.5), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(29, 13.5), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .splineToConstantHeading(new Vector2d(-45.9, 11), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -369,7 +369,7 @@ public class state24blueback extends LinearOpMode {
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 //                .back(13.8, SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL) )
-                .splineToConstantHeading(new Vector2d(-57.9, 11.75), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-57.9, 12.3), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence right_intakebackward4 = drive.trajectorySequenceBuilder(right_intakeforward4.end())
@@ -483,7 +483,9 @@ public class state24blueback extends LinearOpMode {
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
+                                intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(middle_backstage2drop);
+                                intake.stopintake();
                                 waitTimer2.reset();
                                 state = 9;
                             }
@@ -865,8 +867,9 @@ public class state24blueback extends LinearOpMode {
                             break;
                         case 18:
                             if (!drive.isBusy() && waitTimer8.seconds() >= waitTime8) {
-
+                                intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(left_backstage4drop);
+                                intake.stopintake();
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
@@ -1044,7 +1047,9 @@ public class state24blueback extends LinearOpMode {
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
+                                intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(right_backstage2drop);
+                                intake.stopintake();
                                 waitTimer2.reset();
                                 rstate = 9;
                             }

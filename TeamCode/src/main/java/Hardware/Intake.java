@@ -70,7 +70,7 @@ public class Intake {
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
-            intake.setPower(-.5);
+            intake.setPower(-.55);
         }
         intake.setPower(0);
         runtime.reset();
@@ -80,7 +80,7 @@ public class Intake {
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
-            intake.setPower(-.5);
+            intake.setPower(-.55);
         }
         intake.setPower(0);
         runtime.reset();
@@ -96,7 +96,7 @@ public class Intake {
         drop.setPosition(.95);
 
 
-        intake.setPower(-.45);
+        intake.setPower(-.55);
 
     }
 

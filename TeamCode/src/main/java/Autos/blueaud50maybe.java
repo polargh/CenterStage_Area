@@ -168,9 +168,7 @@ public class blueaud50maybe extends LinearOpMode {
         Trajectory away_left = drive.trajectoryBuilder(deposit_left.end())
                 .back(4.5)
                 .build();
-        Trajectory left_park = drive.trajectoryBuilder(away_left.end())
-                .strafeLeft(15)
-                .build();
+
 
 
 
@@ -198,7 +196,7 @@ public class blueaud50maybe extends LinearOpMode {
                 .build();
         TrajectorySequence middlebackdrp= drive.trajectorySequenceBuilder(middletruss.end())
                 .splineToConstantHeading(new Vector2d(21.44, 57.9), Math.toRadians(0.00))
-                .splineTo(new Vector2d(45, 38), Math.toRadians(0.00))
+                .splineTo(new Vector2d(45, 36.5), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
@@ -245,6 +243,15 @@ public class blueaud50maybe extends LinearOpMode {
         Trajectory away_right = drive.trajectoryBuilder(deposit_right.end())
                 .back(4.5)
                 .build();
+        Trajectory middle_park = drive.trajectoryBuilder(away_middle.end())
+                .strafeLeft(21)
+                .build();
+        Trajectory right_park = drive.trajectoryBuilder(away_right.end()) //left
+                .strafeLeft(16)
+                .build();
+        Trajectory left_park = drive.trajectoryBuilder(away_left.end())
+                .strafeLeft(27.5)
+                .build();
         waitForStart();
         if (isStopRequested()) return;
         blueAudiencePipeline.Location location = detector.getLocation();
@@ -285,7 +292,7 @@ public class blueaud50maybe extends LinearOpMode {
                                 drive.followTrajectoryAsync(leftintakeback1);
                                 arm.release();
                                 arm.flapsup();
-
+                             sleep(8000);
                                 state = 2;
                             }
                             break;
@@ -427,6 +434,7 @@ public class blueaud50maybe extends LinearOpMode {
                                 drive.followTrajectoryAsync(middleintakeback1);
                                 arm.release();
                                 arm.flapsup();
+                                sleep(8000);
 
                                 state1 = 2;
                             }
@@ -518,8 +526,17 @@ public class blueaud50maybe extends LinearOpMode {
                                 state1 = 11;
                             }
                             break;
-
                         case 11:
+                            if (!drive.isBusy()) {
+                                drive.followTrajectory(middle_park);
+
+
+                                waitTimer7.reset();
+                                state1 = 12;
+                            }
+                            break;
+
+                        case 12:
                             if (waitTimer7.seconds() >= waitTime7) {
 
 
@@ -569,6 +586,7 @@ public class blueaud50maybe extends LinearOpMode {
                                 drive.followTrajectoryAsync(rightintakeback1);
                                 arm.release();
                                 arm.flapsup();
+                                sleep(8000);
 
                                 state2 = 2;
                             }
@@ -660,8 +678,18 @@ public class blueaud50maybe extends LinearOpMode {
                                 state2 = 11;
                             }
                             break;
-
                         case 11:
+                            if (!drive.isBusy()) {
+                                drive.followTrajectory(right_park);
+
+
+                                waitTimer7.reset();
+                                state1 = 12;
+                            }
+                            break;
+
+
+                        case 12:
                             if (waitTimer7.seconds() >= waitTime7) {
 
 
