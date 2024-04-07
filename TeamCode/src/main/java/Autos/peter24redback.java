@@ -165,8 +165,8 @@ public class peter24redback extends LinearOpMode {
                 .back(12)
                 .build();
         Trajectory middledropyellow = drive.trajectoryBuilder(middleback.end())
-                .splineTo(new Vector2d(42.8, -34.67), Math.toRadians(0.00))
-                .splineToConstantHeading(new Vector2d(51.3, -33.83), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.8, -33.83), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(51.3, -33.5), Math.toRadians(0.00))
 
                 .build();
 
@@ -184,14 +184,14 @@ public class peter24redback extends LinearOpMode {
 
                 .splineToConstantHeading(new Vector2d(25, -8.65), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(-45.9, -8.7), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-45.9, -8.3), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory middle_intakeforward = drive.trajectoryBuilder(middleplus2.end())
 //                .splineToConstantHeading(new Vector2d(-55, -11), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(-56.95, -10.5), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-57.45, -10.85), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory middle_intakebackward = drive.trajectoryBuilder(middle_intakeforward.end())
@@ -200,7 +200,7 @@ public class peter24redback extends LinearOpMode {
         TrajectorySequence middle_backstage2drop = drive.trajectorySequenceBuilder(middle_intakeforward.end())
                 .splineToConstantHeading(new Vector2d(-52, -10), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(46.5, -14.83), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(46.5, -13.99), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -342,7 +342,7 @@ public class peter24redback extends LinearOpMode {
         Trajectory right_intakeforward = drive.trajectoryBuilder(rightplus2.end())
 //                .splineToConstantHeading(new Vector2d(-55, -11), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineToConstantHeading(new Vector2d(-56.95, -10.5), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(new Vector2d(-57.9, -10.45), Math.toRadians(0.00), SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory right_intakebackward = drive.trajectoryBuilder(right_intakeforward.end())
@@ -413,7 +413,7 @@ public class peter24redback extends LinearOpMode {
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                arm.rotwrist.setPosition(.5375);
+                                arm.rotwrist.setPosition(.7);
                                 arm.bendwrist.setPosition(.705);
                                 arm.drop.setPosition(.95);
                                 drive.followTrajectoryAsync(middledropyellow);

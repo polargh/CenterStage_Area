@@ -147,7 +147,7 @@ public class coolTele extends LinearOpMode {
     public static int MID_POS = 700;
     public static int MID_HIGH_POS = 1000;
     //max 2320
-    public static int HIGH_POS = 1600;
+    public static int HIGH_POS = 1250;
     public static int LOW_AUTO = 900;
     int drone_target = 0;
 
@@ -200,7 +200,7 @@ public class coolTele extends LinearOpMode {
         // Lift lift = new Lift(hardwareMap, telemetry);
 
 
-        robot.drop.setPosition(.89);
+        robot.drop.setPosition(.82);
         robot.frontclaw.setPosition(FRONTRELEASE);
         robot.rearclaw.setPosition(REARRELEASE);
 
@@ -231,7 +231,7 @@ public class coolTele extends LinearOpMode {
             switch (outlift) { // scoring pos with lift
                 case START:
                     if ( gamepad2.dpad_down || gamepad2.dpad_up) {
-                        robot.drop.setPosition(.63);
+                        robot.drop.setPosition(.55);
                         robot.bendwrist.setPosition(.148);
                         waitTimer1.reset();
                         outtake = elbowUpState.OUTTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
@@ -239,7 +239,7 @@ public class coolTele extends LinearOpMode {
                     break;
                 case OUTTAKE:
                     if(waitTimer1.seconds() >= waitTime1) {
-                        robot.drop.setPosition(.63);
+                        robot.drop.setPosition(.55);
                         robot.raxon.setPosition(.3);
                         robot.laxon.setPosition(.7);
 //                        robot.laxon.setPosition(.92);
@@ -255,7 +255,7 @@ public class coolTele extends LinearOpMode {
 
 
 
-                        robot.drop.setPosition(.95);
+                        robot.drop.setPosition(.82);
 
                         waitTimer4.reset();
                         outtake = elbowUpState.START;
@@ -294,7 +294,7 @@ public class coolTele extends LinearOpMode {
                         robot.rflap.setPosition(RFLAPDOWN);
 
 
-                        robot.drop.setPosition(.89);
+                        robot.drop.setPosition(.82);
 
                         waitTimer4.reset();
                         outtake = elbowUpState.START;
@@ -313,7 +313,7 @@ public class coolTele extends LinearOpMode {
                         robot.bendwrist.setPosition(.151);
                         robot.frontclaw.setPosition(FRONTRELEASE);
                         robot.rearclaw.setPosition(REARRELEASE);
-                        robot.drop.setPosition(.63);
+                        robot.drop.setPosition(.55);
                         waitTimer2.reset();
                         intake = elbowDownState.MID; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
                     }
@@ -357,7 +357,7 @@ public class coolTele extends LinearOpMode {
                 case AFTERINTAKE:
                     if(waitTimer8.seconds() >= waitTime8) {
 
-                        robot.drop.setPosition(.89);
+                        robot.drop.setPosition(.82);
 
                         intake = elbowDownState.START;
 
@@ -484,21 +484,21 @@ public class coolTele extends LinearOpMode {
 
             }
             if (intakepos == 4 ) {
-                drop_pos = .5795;
+                drop_pos = .485;
             }
             if (intakepos == 3 ) {
-               drop_pos = .63;
+               drop_pos = .55;
             }
             if (intakepos == 2 ) {
-               drop_pos = .685;
+               drop_pos = .6;
             }
             if (intakepos == 1) {
-                drop_pos = .89;
+                drop_pos = .82;
             }
 
             if (gamepad1.right_trigger > 0) { //out
                 robot.intake.setPower(-3);
-                robot.drop.setPosition(.89);
+                robot.drop.setPosition(.82);
 
 
 
