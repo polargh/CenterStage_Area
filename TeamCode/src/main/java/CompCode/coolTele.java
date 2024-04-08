@@ -212,7 +212,7 @@ public class coolTele extends LinearOpMode {
         // robot.drop.setPosition(.89);
         robot.raxon.setPosition(.66);
         robot.laxon.setPosition(.34);
-        robot.bendwrist.setPosition(.1552);
+        robot.bendwrist.setPosition(.1655);
         robot.drone.setPosition(.5);
 
         waitForStart();
@@ -310,7 +310,7 @@ public class coolTele extends LinearOpMode {
                         robot.lflap.setPosition(LFLAPDOWN);
                         robot.rflap.setPosition(RFLAPDOWN);
                         rotate_pos = 3;
-                        robot.bendwrist.setPosition(.151);
+                        robot.bendwrist.setPosition(.15);
                         robot.frontclaw.setPosition(FRONTRELEASE);
                         robot.rearclaw.setPosition(REARRELEASE);
                         robot.drop.setPosition(.55);
@@ -348,7 +348,7 @@ public class coolTele extends LinearOpMode {
                        // robot.drop.setPosition(.89);
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
-                        robot.bendwrist.setPosition(.1595);
+                        robot.bendwrist.setPosition(.1655);
 
                         intake = elbowDownState.AFTERINTAKE;
                         waitTimer8.reset();
@@ -383,7 +383,7 @@ public class coolTele extends LinearOpMode {
                     if(waitTimer6.seconds() >= waitTime6) {
                         robot.raxon.setPosition(.783);
                         robot.laxon.setPosition(.217);
-                        robot.bendwrist.setPosition(.161);
+                        robot.bendwrist.setPosition(.1655);
                       //  robot.drop.setPosition(.63);
                         waitTimer10.reset();
                         claw = grab.PICKPIXELS;
@@ -402,7 +402,7 @@ public class coolTele extends LinearOpMode {
                     if(waitTimer7.seconds() >= waitTime7) {
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
-                        robot.bendwrist.setPosition(.15);
+                        robot.bendwrist.setPosition(.165);
                         claw = grab.START;
                     }
                     break;
