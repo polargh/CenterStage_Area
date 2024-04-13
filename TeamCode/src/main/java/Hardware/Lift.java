@@ -35,7 +35,7 @@ public class Lift {
     public static int MID_HIGH_POS = 2550;
 
     public static int HIGH_POS = 3100;
-    public static int LOW_AUTO =83;
+    public static int LOW_AUTO =87;
     public static int LOW_AUTOaud =410;
 
 

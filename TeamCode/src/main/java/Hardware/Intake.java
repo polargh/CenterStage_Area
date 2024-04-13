@@ -26,41 +26,41 @@ public class Intake {
 
 
     public void intake5(double sec) {
-        drop.setPosition(.59);
+        drop.setPosition(.5755);
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
         intake.setPower(1.9);
     }
-        drop.setPosition(.89);
+        drop.setPosition(.82);
        intake.setPower(0);
         runtime.reset();
     }
     public void intake3(double sec) {
-        drop.setPosition(.585);
+        drop.setPosition(.485);
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
             intake.setPower(1.9);
         }
-        drop.setPosition(.89);
+        drop.setPosition(.82);
         intake.setPower(0);
         runtime.reset();
     }
     public void intakewhile() {
-        drop.setPosition(.482);
+        drop.setPosition(.535);
             intake.setPower(1.9);
     }
     public void intakewhile5() {
-        drop.setPosition(.6605);
+        drop.setPosition(.535);
         intake.setPower(.8);
     }
     public void intakewhile3() {
-        drop.setPosition(.57945);
+        drop.setPosition(.485);
         intake.setPower(1);
     }
     public void stopintake() {
-        drop.setPosition(.95);
+        drop.setPosition(.82);
         intake.setPower(0);
     }
 
@@ -76,7 +76,7 @@ public class Intake {
         runtime.reset();
     }
     public void outtake2nd(double sec) {
-        drop.setPosition(.95);
+        drop.setPosition(.82);
         ElapsedTime runtime = new ElapsedTime();
         runtime.reset();
         while(runtime.seconds() <= sec){
@@ -86,14 +86,14 @@ public class Intake {
         runtime.reset();
     }
     public void outtake2ndon() {
-        drop.setPosition(.95);
+        drop.setPosition(.82);
 
 
             intake.setPower(-.1);
 
     }
     public void outtake2ndaud() {
-        drop.setPosition(.95);
+        drop.setPosition(.82);
 
 
         intake.setPower(-.55);

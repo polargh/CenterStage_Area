@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -25,7 +26,7 @@ import Hardware.Arm;
 
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
-
+@Disabled
 @Autonomous(name="markerauto2+4backstagered", group="Auto")
 public class markerautotesting extends LinearOpMode {
     SampleMecanumDrive drive;

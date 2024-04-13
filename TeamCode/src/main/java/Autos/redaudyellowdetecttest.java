@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -24,6 +25,7 @@ import Hardware.Yellowpixelpipe;
 import Hardware.redAudiencePipeline;
 
 //public class redaudyellowdetecttest {
+@Disabled
 @Autonomous(name="Red2+1audpixeltest", group="Auto")
 public class redaudyellowdetecttest extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;

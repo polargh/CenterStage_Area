@@ -62,11 +62,11 @@ public class Arm {
         this.telemetry = telemetry;
     }
     public void pulloutpixel(){
-        drop.setPosition(.465);
+        drop.setPosition(.555);
         bendwrist.setPosition(.145);
     }
     public void goToScoringPoslift(){
-        drop.setPosition(.465);
+        drop.setPosition(.55);
         raxon.setPosition(.3);
         laxon.setPosition(.7);
     }
@@ -89,7 +89,7 @@ public class Arm {
     }
     public void intakePostele(){
         rotwrist.setPosition(.41);
-        drop.setPosition(.63);
+        drop.setPosition(.55);
 
 
         rearclaw.setPosition(REARRELEASE);
@@ -102,7 +102,7 @@ public class Arm {
     }
     public void init(){
         rotwrist.setPosition(.41);
-        drop.setPosition(.89);
+        drop.setPosition(.82);
         raxon.setPosition(.64);
         laxon.setPosition(.46);
         bendwrist.setPosition(.15);
@@ -125,7 +125,7 @@ public class Arm {
         rotwrist.setPosition(.41);
         rearclaw.setPosition(REARRELEASE);
         frontclaw.setPosition(FRONTRELEASE);
-        drop.setPosition(.4825);
+        drop.setPosition(.55);
     }
     public void flapsup(){ //almost grab
         lflap.setPosition(LFLAPUP);
@@ -139,7 +139,7 @@ public class Arm {
        raxon.setPosition(.783);
        laxon.setPosition(.217);
        bendwrist.setPosition(.159);
-        drop.setPosition(.466);
+        drop.setPosition(.56);
 
     }
     public void grab(){ //almost grab
@@ -150,7 +150,7 @@ public class Arm {
         raxon.setPosition(.64);
         laxon.setPosition(.36);
         bendwrist.setPosition(.151);
-        drop.setPosition(.466);
+        drop.setPosition(.55);
     }
     public void outyellowp2(){ //almost grab
        // lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
@@ -163,7 +163,7 @@ public class Arm {
     public void outyellowp1(){ //almost grab
         // lift.moveToTarget(Lift.LiftPos.LOW_AUTO);
         bendwrist.setPosition(.705);
-        drop.setPosition(.95);
+        drop.setPosition(.82);
         raxon.setPosition(.3);
         laxon.setPosition(.7);
        // rotwrist.setPosition(.4);
