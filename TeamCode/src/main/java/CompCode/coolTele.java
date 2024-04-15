@@ -114,12 +114,13 @@ public class coolTele extends LinearOpMode {
     double waitTime4 = .3;
     double waitTime9 = .65;
     double waitTime6 = .495;
-    double waitTime7 = .4;
+    double waitTime7 = .65;
     double waitTime8 = .25;
     double waitTime10 = .4;
     double waitTime11 = .4;
     double waitTime12 = .45; //dronelaunch
     double waitTime13 = .45; //climb
+    double waitTime15 = .45;
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -137,6 +138,7 @@ public class coolTele extends LinearOpMode {
 
     ElapsedTime waitTimer12 = new ElapsedTime();
     ElapsedTime waitTimer13 = new ElapsedTime();
+    ElapsedTime waitTimer15 = new ElapsedTime();
     ElapsedTime runtime = new ElapsedTime();
 //
 
@@ -232,13 +234,13 @@ public class coolTele extends LinearOpMode {
                 case START:
                     if ( gamepad2.dpad_down || gamepad2.dpad_up) {
                         robot.drop.setPosition(.55);
-                        robot.bendwrist.setPosition(.148);
-                        waitTimer1.reset();
+                        robot.bendwrist.setPosition(.15);
+                        waitTimer15.reset();
                         outtake = elbowUpState.OUTTAKE; //OUTTAKE POSITIONS, DIF HEIGHTS (black frame thing for pixels)
                     }
                     break;
                 case OUTTAKE:
-                    if(waitTimer1.seconds() >= waitTime1) {
+                    if(waitTimer15.seconds() >= waitTime15) {
                         robot.drop.setPosition(.55);
                         robot.raxon.setPosition(.3);
                         robot.laxon.setPosition(.7);
@@ -402,7 +404,7 @@ public class coolTele extends LinearOpMode {
                     if(waitTimer7.seconds() >= waitTime7) {
                         robot.raxon.setPosition(.66);
                         robot.laxon.setPosition(.34);
-                        robot.bendwrist.setPosition(.165);
+                        robot.bendwrist.setPosition(.1685);
                         claw = grab.START;
                     }
                     break;

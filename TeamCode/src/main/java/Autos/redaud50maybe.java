@@ -27,7 +27,7 @@ import Hardware.redAudiencePipeline;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Red_AUD_2+1_TRUSS", group="Auto")
+@Autonomous(name="Red_AUD_2+3_TRUSS", group="Auto")
 public class redaud50maybe extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;
@@ -36,18 +36,24 @@ public class redaud50maybe extends LinearOpMode {
 
     Intake intake;
     //Arm arm;
+
+    double LFLAPUP = .465;
+    double LFLAPDOWN = .57;
+    double RFLAPUP = .512;
+    double RFLAPDOWN = .4309;
     double FRONTRELEASE = .472;
     double REARRELEASE = .235;
-    double waitTime1 = 1.5;
-    double waitTime2 = 0.6;
-    double waitTime3 = 0.4;
+    double waitTime1 = 1.9;
+    double waitTime2 = 0.57;
+    double waitTime3 = 0.65;
     double waitTime4 = .1;
     double waitTime6 = .18;
-    double waitTime7 = 2;
+    double waitTime7 = .45;
     double waitTime8 = .5;
-    double waitTime9 = .75;
+    double waitTime9 = .5;
     double waitTime10 = 1.25;
     double waitTime11 = .5;
+    double waitTime12 = 1.35;
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -63,6 +69,8 @@ public class redaud50maybe extends LinearOpMode {
     ElapsedTime waitTimer10 = new ElapsedTime();
 
     ElapsedTime waitTimer11 = new ElapsedTime();
+
+    ElapsedTime waitTimer12 = new ElapsedTime();
 
 
     ElapsedTime runtime = new ElapsedTime();
@@ -214,12 +222,13 @@ public class redaud50maybe extends LinearOpMode {
         Trajectory backup_right = drive.trajectoryBuilder(right.end())
                 .back(7.5)
                 .build();
+
         Trajectory rightatintake = drive.trajectoryBuilder(backup_right.end())
-                .lineToLinearHeading(new Pose2d(-56.2, -41, Math.toRadians(-25.00)))
+                .lineToLinearHeading(new Pose2d(-55, -36.8, Math.toRadians(0.00)))
                 .build();
 
         Trajectory right_intakeforward = drive.trajectoryBuilder(rightatintake.end())
-                .back(5.77, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .back(4.825, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory rightintakeback1 = drive.trajectoryBuilder(right_intakeforward.end())
@@ -227,24 +236,55 @@ public class redaud50maybe extends LinearOpMode {
                 .build();
 
         Trajectory righttruss= drive.trajectoryBuilder(rightintakeback1.end())
-                .splineTo(new Vector2d(-29.48, -57.9), Math.toRadians(0.00))
+                .splineTo(new Vector2d(-29.48, -56.9), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
         TrajectorySequence rightbackdrp= drive.trajectorySequenceBuilder(righttruss.end())
-                .splineToConstantHeading(new Vector2d(21.44, -56.2), Math.toRadians(0.00))
-                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(21.44, -56.5), Math.toRadians(0.00))
+                .splineTo(new Vector2d(42.52, -37.5), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
 
+
 //
         Trajectory deposit_right = drive.trajectoryBuilder(rightbackdrp.end())
-                .forward(6.955)
+                .forward(8.25)
                 .build();
         Trajectory away_right = drive.trajectoryBuilder(deposit_right.end())
                 .back(4.5)
                 .build();
+        TrajectorySequence rightundertruss = drive.trajectorySequenceBuilder(away_right.end())
+                .setTangent(Math.toRadians(180))
+                .splineTo(new Vector2d(12, -56.2), Math.PI)
+                .splineTo(new Vector2d(-30, -56.2), Math.toRadians(180))
+                .splineTo(new Vector2d(-54.5, -32.89), Math.toRadians(180))
+                .build();
+        Trajectory right_intakeforward3 = drive.trajectoryBuilder(rightundertruss.end())
+                .back(2.55, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        Trajectory rightintakeback3 = drive.trajectoryBuilder(right_intakeforward3.end())
+                .forward(7)
+                .build();
+
+        TrajectorySequence right_backstage2drop = drive.trajectorySequenceBuilder(rightintakeback3.end())
+//                .splineToConstantHeading(new Vector2d(-52, -10), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .splineToConstantHeading(new Vector2d(46.5, -14.83), Math.toRadians(0),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
+//                .splineTo(new Vector2d(30, -56), Math.toRadians(0.00))
+//                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(19))
+                .splineTo(new Vector2d(-29.5, -54), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineTo(new Vector2d(17.33, -54), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineTo(new Vector2d(54.2, -47.65), Math.toRadians(25))
+                .build();
+
+
         waitForStart();
         if (isStopRequested()) return;
         redAudiencePipeline.Location location = detector.getLocation();
@@ -280,8 +320,8 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
 
                                 intake.outtake(.3);
-                                intake.intake3(.7);
-                                intake.outtake2ndaud();
+//                                intake.intakewhile5();
+//                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(leftintakeback1);
                                 arm.release();
                                 arm.flapsup();
@@ -292,11 +332,11 @@ public class redaud50maybe extends LinearOpMode {
                         case 2:
                             if (!drive.isBusy()) {
                                 intake.stopintake();
-                                arm.drop.setPosition(.9);
+                                arm.drop.setPosition(.585);
                                 drive.followTrajectoryAsync(lefttruss);
-                                arm.raxon.setPosition(.783);
-                                arm.laxon.setPosition(.217);
-                                arm.bendwrist.setPosition(.159);
+                                arm.raxon.setPosition(.784);
+                                arm.laxon.setPosition(.216);
+                                arm.bendwrist.setPosition(.152);
                                 waitTimer2.reset();
 
 
@@ -420,8 +460,8 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
 
                                 intake.outtake(.3);
-                                intake.intake3(.7);
-                                intake.outtake2ndaud();
+//                                intake.intake3(.7);
+//                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(middleintakeback1);
                                 arm.release();
                                 arm.flapsup();
@@ -432,7 +472,7 @@ public class redaud50maybe extends LinearOpMode {
                         case 2:
                             if (!drive.isBusy()) {
                                 intake.stopintake();
-                                arm.drop.setPosition(.9);
+                                arm.drop.setPosition(.59);
                                 drive.followTrajectoryAsync(middletruss);
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
@@ -562,8 +602,8 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
 
                                 intake.outtake(.3);
-                                intake.intake3(.7);
-                                intake.outtake2ndaud();
+//                                intake.intake3(.7);
+//                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(rightintakeback1);
                                 arm.release();
                                 arm.flapsup();
@@ -574,11 +614,11 @@ public class redaud50maybe extends LinearOpMode {
                         case 2:
                             if (!drive.isBusy()) {
                                 intake.stopintake();
-                                arm.drop.setPosition(.9);
+                                arm.drop.setPosition(.59);
                                 drive.followTrajectoryAsync(righttruss);
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
-                                arm.bendwrist.setPosition(.159);
+                                arm.bendwrist.setPosition(.1655);
                                 waitTimer2.reset();
 
 
@@ -595,7 +635,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
 
                         case 4:
-                            if (!drive.isBusy() && waitTimer3.seconds() >= waitTime3) {
+                            if ( waitTimer3.seconds() >= waitTime3) {
 
                                 arm.aftergrab();
 
@@ -604,7 +644,7 @@ public class redaud50maybe extends LinearOpMode {
                             }
                             break;
                         case 5:
-                            if (waitTimer4.seconds() >= waitTime4) {
+                            if (!drive.isBusy() && waitTimer4.seconds() >= waitTime4) {
 
                                 arm.bendwrist.setPosition(.148);
                                 drive.followTrajectorySequenceAsync(rightbackdrp);
@@ -655,12 +695,127 @@ public class redaud50maybe extends LinearOpMode {
                                 pos = Lift.LiftPos.START;
 
                                 waitTimer7.reset();
-                                state2 = 11;
+                                state2 = 15;
                             }
                             break;
 
-                        case 11:
+                        case 15:
+                            if (!drive.isBusy()) {
+                                arm.intakePos();
+                                arm.lflap.setPosition(LFLAPDOWN);
+                                arm.rflap.setPosition(RFLAPDOWN);
+                                drive.followTrajectorySequenceAsync(rightundertruss);
+                                state2 = 16;
+                            }
+                            break;
+                        case 16:
+                            if (!drive.isBusy()) {
+
+                                intake.intakewhile3();
+                                drive.followTrajectory(right_intakeforward3);
+                                waitTimer10.reset();
+
+
+                                state2 = 17;
+                            }
+                            break;
+                        case 17:
+                            if (waitTimer10.seconds() >= waitTime10) {
+                                intake.outtake(.25);
+                                intake.intake3(.885);
+                                intake.outtake2nd(.45);
+                                drive.followTrajectoryAsync(rightintakeback3);
+                                arm.lflap.setPosition(LFLAPUP);
+                                arm.rflap.setPosition(RFLAPUP);
+                                arm.release();
+
+
+                                waitTimer8.reset();
+                                state2 = 18;
+                            }
+                            break;
+                        case 18:
+                            if (!drive.isBusy() && waitTimer8.seconds() >= waitTime8) {
+
+                                drive.followTrajectorySequenceAsync(right_backstage2drop);
+                                arm.raxon.setPosition(.783);
+                                arm.laxon.setPosition(.217);
+                                arm.bendwrist.setPosition(.159);
+
+
+                                waitTimer2.reset();
+                                state2 = 19;
+                            }
+                            break;
+                        case 19:
+                            if (waitTimer2.seconds() >= waitTime2) {
+
+                                arm.grab();
+
+                                waitTimer3.reset();
+                                state2 = 20;
+                            }
+                            break;
+                        case 20:
+                            if (waitTimer3.seconds() >= waitTime3) {
+
+                                arm.aftergrab();
+
+                                waitTimer4.reset();
+                                state2 = 21;
+                            }
+                            break;
+                        case 21:
+                            if (waitTimer4.seconds() >= waitTime4) {
+
+                                arm.bendwrist.setPosition(.15);
+
+
+                                waitTimer12.reset();
+                                state2 = 22;
+                            }
+                            break;
+                        case 22:
+                            if (waitTimer12.seconds() >= waitTime12) {
+                                pos = Lift.LiftPos.LOW;
+                                arm.drop.setPosition(.63);
+                                arm.raxon.setPosition(.28);
+                                arm.laxon.setPosition(.72);
+
+                                waitTimer7.reset();
+                                state2 = 23;
+                            }
+                            break;
+                        case 23:
                             if (waitTimer7.seconds() >= waitTime7) {
+                                arm.rotwrist.setPosition(.89);
+                                arm.bendwrist.setPosition(.7);
+                                arm.drop.setPosition(.82);
+                                waitTimer7.reset();
+                                state2 = 24;
+                            }
+                            break;
+                        case 24:
+                            if (!drive.isBusy() && waitTimer7.seconds() >= waitTime7) {
+
+                                arm.release();
+
+                                waitTimer7.reset();
+                                state2 = 25;
+                            }
+                            break;
+                        case 25:
+                            if (!drive.isBusy() && waitTimer7.seconds() >= waitTime7) {
+                                pos = Lift.LiftPos.START;
+                                arm.intakePos();
+
+                                waitTimer9.reset();
+                                state2 = 26;
+                            }
+                            break;
+
+                        case 13:
+                            if (waitTimer9.seconds() >= waitTime9) {
 
 
                                 done2 = true;

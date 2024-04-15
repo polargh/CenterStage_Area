@@ -15,8 +15,6 @@ public class Lift {
     public static double p = 0.0055, i = 0, d = 0.0; // d = dampener (dampens arm movement and is scary). ignore i
     public static double f = 0.00049;  // prevents arm from falling from gravity
 
-
-
     public enum LiftPos{
         START,
         LOW,
@@ -30,7 +28,7 @@ public class Lift {
     public DcMotorEx larm;
     public DcMotorEx rarm;
     public static int START_POS = 0;
-    public static int LOW_POS = 1550;
+    public static int LOW_POS = 785;
     public static int MID_POS = 1900;
     public static int MID_HIGH_POS = 2550;
 
@@ -61,8 +59,8 @@ public class Lift {
         larm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rarm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        larm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rarm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        larm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rarm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void update(LiftPos target) {

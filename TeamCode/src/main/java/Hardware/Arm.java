@@ -103,9 +103,9 @@ public class Arm {
     public void init(){
         rotwrist.setPosition(.41);
         drop.setPosition(.82);
-        raxon.setPosition(.64);
-        laxon.setPosition(.46);
-        bendwrist.setPosition(.15);
+        raxon.setPosition(.66);
+        laxon.setPosition(.34);
+        bendwrist.setPosition(.1655);
         rearclaw.setPosition(REARGRAB);
         frontclaw.setPosition(FRONTGRAB);
         lflap.setPosition(LFLAPDOWN);
