@@ -28,13 +28,13 @@ public class Lift {
     public DcMotorEx larm;
     public DcMotorEx rarm;
     public static int START_POS = 0;
-    public static int LOW_POS = 785;
+    public static int LOW_POS = 796;
     public static int MID_POS = 1900;
     public static int MID_HIGH_POS = 2550;
 
     public static int HIGH_POS = 3100;
     public static int LOW_AUTO =87;
-    public static int LOW_AUTOaud =410;
+    public static int LOW_AUTOaud =405;
 
 
 //    int MANUAL = larm.getCurrentPosition() +20;

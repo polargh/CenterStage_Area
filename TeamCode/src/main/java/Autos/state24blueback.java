@@ -27,7 +27,7 @@ import Hardware.Arm;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Blue_two+four_back_stage", group="Auto")
+@Autonomous(name="Blue_2+4_back_stage", group="Auto")
 public class state24blueback extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;

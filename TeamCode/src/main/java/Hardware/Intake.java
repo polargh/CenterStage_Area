@@ -1,14 +1,10 @@
 package Hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Subsystems.Subsystem;
-
-import com.qualcomm.robotcore.util.Range;
 
 public class Intake {
 
@@ -17,9 +13,9 @@ public class Intake {
     Servo drop;
     DcMotorEx intake;
 
-    public Intake(v2bot_map robot, Telemetry telemetry) {
-        this.drop = robot.drop;
-        this.intake = robot.intake;
+    public Intake(SKRobot robot, Telemetry telemetry) {
+        this.drop = robot.intakePitch;
+        this.intake = robot.intakeMotor;
 
     }
 

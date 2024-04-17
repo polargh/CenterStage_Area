@@ -32,14 +32,11 @@ package Hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor; //REV
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 /**
@@ -59,79 +56,76 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Servo channel:  Servo to open right claw: "right_hand"
  */
 @Config
-public class v2bot_map {
+public class SKRobot {
     /* Public OpMode members. */
     public DcMotor leftFront;
     public DcMotor rightFront;
     public DcMotor leftBack;
     public DcMotor rightBack;
 
-    public DcMotor climb;
+    public DcMotorEx intakeMotor;
+    public DcMotor climbServo;
 
-    public DcMotorEx intake;
-    public Servo drone;
-    public Servo wheel;
-    public Servo raxon;
-    public Servo wrist;
-    public Servo laxon;
-    public Servo lflap;
-    public Servo rflap;
+    public Servo droneServo;
+    public Servo v4bLeft;
+    public Servo v4bRight;
 
+    public Servo leftFlapServo;
+    public Servo rightFlapServo;
 
-    public Servo rearclaw;
-    public Servo frontclaw;
-    public Servo drop;
+    public Servo rearClawServo;
+    public Servo frontClawServo;
+    public Servo intakePitch;
 
-    public Servo rotwrist;
-    public Servo bendwrist;
-    //public Servo rightaxon;
-    // public Servo leftaxon;
+    public Servo clawRtoationServo;
+    public Servo bendWristServo;
 
-    //    public Servo ldrop;
     public WebcamName webcam;
-    public DistanceSensor intakedis;
+    public DistanceSensor intakeDistanceSensor;
     public DigitalChannel lredLED;
     public DigitalChannel lgreenLED;
     public DigitalChannel rredLED;
     public DigitalChannel rgreenLED;
-//    public DcMotor rin = null;
-//    public DcMotor lin = null;
-
 
     HardwareMap hwMap = null;
+
     private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
-    public v2bot_map() {
-
+    public SKRobot getInstance() {
+        return this;
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
-        // Save reference to Hardware map
-        hwMap = ahwMap;
+    public void init(HardwareMap hwMap) {
+        // Reassign Hardware Map
+        this.hwMap = hwMap;
 
-
-        // Define and Initialize Motors
+        /*
+         *  Drivetrain Motors
+         */
         leftFront = hwMap.get(DcMotorEx.class, "parallelEncoder");
         leftBack = hwMap.get(DcMotorEx.class, "perpendicularEncoder");
         rightBack = hwMap.get(DcMotorEx.class, "rb");
         rightFront = hwMap.get(DcMotorEx.class, "rf");
-        //drone = hwMap.get(Servo.class, "release");
-        climb = hwMap.get(DcMotor.class, "climb");
-        intake = hwMap.get(DcMotorEx.class, "intake"); //intake spin
-        drop = hwMap.get(Servo.class, "drop"); //intake move up and down
-        rearclaw = hwMap.get(Servo.class, "rearclaw"); //tiny claw 1
-        frontclaw = hwMap.get(Servo.class, "frontclaw"); //tiny claw 2
-        bendwrist = hwMap.get(Servo.class, "bendwrist");
-        rotwrist = hwMap.get(Servo.class, "spinwrist");
-        laxon = hwMap.get(Servo.class, "laxon");
-        raxon = hwMap.get(Servo.class, "raxon");
-        raxon = hwMap.get(Servo.class, "raxon");
-        lflap = hwMap.get(Servo.class, "lflap");
-        rflap = hwMap.get(Servo.class, "rflap");
-        intakedis = hwMap.get(DistanceSensor.class, "dispixel");
-        drone = hwMap.get(Servo.class, "drone");
+
+        /*
+         *  Subsystem Motors
+         */
+        climbServo = hwMap.get(DcMotor.class, "climb");
+        intakeMotor = hwMap.get(DcMotorEx.class, "intake"); //intake spin
+        intakePitch = hwMap.get(Servo.class, "drop"); //intake move up and down
+        rearClawServo = hwMap.get(Servo.class, "rearclaw"); //tiny claw 1
+        frontClawServo = hwMap.get(Servo.class, "frontclaw"); //tiny claw 2
+        bendWristServo = hwMap.get(Servo.class, "bendwrist");
+        clawRtoationServo = hwMap.get(Servo.class, "spinwrist");
+        v4bLeft = hwMap.get(Servo.class, "laxon");
+        v4bRight = hwMap.get(Servo.class, "raxon");
+        v4bRight = hwMap.get(Servo.class, "raxon");
+        leftFlapServo = hwMap.get(Servo.class, "lflap");
+        rightFlapServo = hwMap.get(Servo.class, "rflap");
+        intakeDistanceSensor = hwMap.get(DistanceSensor.class, "dispixel");
+        droneServo = hwMap.get(Servo.class, "drone");
 
         lredLED = hwMap.get(DigitalChannel.class, "lred");
         lgreenLED = hwMap.get(DigitalChannel.class, "lgreen");
@@ -142,62 +136,34 @@ public class v2bot_map {
         rredLED.setMode(DigitalChannel.Mode.OUTPUT);
         rgreenLED.setMode(DigitalChannel.Mode.OUTPUT);
 
-
-//        webcam = hwMap.get(WebcamName.class, "Webcam 1");
-
-//        raxon = hwMap.get(Servo.class, "raxon");
-//        laxon = hwMap.get(Servo.class, "laxon");
-//        wrist = hwMap.get(Servo.class, "wrist");
-//        ldrop = hwMap.get(Servo.class, "ldrop");
-        //claw1 = hwMap.get(Servo.class, "claw1");
-
-
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
-        intake.setDirection(DcMotor.Direction.FORWARD);
-        climb.setDirection(DcMotor.Direction.REVERSE);
-//
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        climbServo.setDirection(DcMotor.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        lin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climbServo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climbServo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
-        climb.setPower(0);
-        intake.setPower(0);
+        climbServo.setPower(0);
+        intakeMotor.setPower(0);
 
-       // climb.setTargetPosition(0);
-       // climb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-//        lin.setPower(0);
-//        rin.setPower(0);
-
-
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        climb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        lin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rin.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Define and initialize ALL installed servos.
-
-
+        climbServo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
 

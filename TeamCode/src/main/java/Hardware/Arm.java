@@ -3,11 +3,8 @@ package Hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import Hardware.Lift;
-import Hardware.v2bot_map;
 
 public class Arm {
     public Servo rotwrist ;
@@ -35,16 +32,16 @@ public class Arm {
     Telemetry telemetry;
 
 
-    public Arm(v2bot_map robot, Telemetry telemetry){
-        this.rotwrist = robot.rotwrist;
-        this.raxon = robot.raxon;
-        this.bendwrist = robot.bendwrist;
-        this.laxon = robot.laxon;
-        this.drop = robot.drop;
-        this.frontclaw = robot.frontclaw;
-        this.rearclaw = robot.rearclaw;
-        this.rflap = robot.rflap;
-        this.lflap = robot.lflap;
+    public Arm(SKRobot robot, Telemetry telemetry){
+        this.rotwrist = robot.clawRtoationServo;
+        this.raxon = robot.v4bRight;
+        this.bendwrist = robot.bendWristServo;
+        this.laxon = robot.v4bLeft;
+        this.drop = robot.intakePitch;
+        this.frontclaw = robot.frontClawServo;
+        this.rearclaw = robot.rearClawServo;
+        this.rflap = robot.rightFlapServo;
+        this.lflap = robot.leftFlapServo;
 
         this.telemetry = telemetry;
 

@@ -1,4 +1,4 @@
-package Autos;
+package Autos.AutoFunctions;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -27,8 +27,8 @@ import Hardware.redAudiencePipeline;
 //import com.acmerobotics.roadrunner.trajectoryBuilder;
 
 
-@Autonomous(name="Red_AUD_2+3_TRUSS", group="Auto")
-public class redaud50maybe extends LinearOpMode {
+@Autonomous(name="Red_AUD_2+3_stage", group="Auto")
+public class redaudstage extends LinearOpMode {
     SampleMecanumDrive drive;
     OpenCvCamera webcam;
     Lift lift;
@@ -43,7 +43,7 @@ public class redaud50maybe extends LinearOpMode {
     double RFLAPDOWN = .4309;
     double FRONTRELEASE = .472;
     double REARRELEASE = .235;
-    double waitTime1 = 1.875;
+    double waitTime1 = 2;
     double waitTime2 = 0.57;
     double waitTime3 = 0.65;
     double waitTime4 = .01;
@@ -51,9 +51,10 @@ public class redaud50maybe extends LinearOpMode {
     double waitTime7 = .4;
     double waitTime8 = .5;
     double waitTime9 = .5;
-    double waitTime10 = 1.25;
+    double waitTime10 = 1.3;
     double waitTime11 = .5;
     double waitTime12 = .01;
+    double waitTimeintake1 = 1.4;
     private MultipleTelemetry tl;
 
     ElapsedTime waitTimer1 = new ElapsedTime();
@@ -71,6 +72,7 @@ public class redaud50maybe extends LinearOpMode {
     ElapsedTime waitTimer11 = new ElapsedTime();
 
     ElapsedTime waitTimer12 = new ElapsedTime();
+    ElapsedTime waitTimerintake1 = new ElapsedTime();
 
     ElapsedTime runtime = new ElapsedTime();
 
@@ -122,8 +124,19 @@ public class redaud50maybe extends LinearOpMode {
                 .splineTo(new Vector2d(-45.99, -40), Math.toRadians(90))
                 .build();
 
-        Trajectory middle = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-36.5, -35), Math.toRadians(90))
+        TrajectorySequence lefttest= drive.trajectorySequenceBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(-35.75, -22.9, Math.toRadians(210.00)))
+                .waitSeconds(.01)
+                .back(.25)
+                .lineToLinearHeading(new Pose2d(-56.83,-12.1, Math.toRadians(360)))
+                .waitSeconds(1.05)
+                .build();
+        TrajectorySequence middletest= drive.trajectorySequenceBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(-50, -28, Math.toRadians(0.00)))
+                .waitSeconds(.01)
+                .back(.5)
+                .lineToLinearHeading(new Pose2d(-57.6,-11.9, Math.toRadians(0)))
+                .waitSeconds(1.34)
                 .build();
 
 
@@ -131,34 +144,26 @@ public class redaud50maybe extends LinearOpMode {
                 .splineTo(new Vector2d(-31.5, -39.5), Math.toRadians(50.00))
                 .build();
 
+//        Trajectory leftatintake = drive.trajectoryBuilder(left.end())
+//                .lineToLinearHeading(new Pose2d(-56.2, -41, Math.toRadians(-25.00)))
+//                .build();
 
-
-        Trajectory backup_left = drive.trajectoryBuilder(left.end())
-                .back(7.5)
-                .build();
-        Trajectory leftatintake = drive.trajectoryBuilder(backup_left.end())
-                .lineToLinearHeading(new Pose2d(-56.2, -41, Math.toRadians(-25.00)))
-                .build();
-
-        Trajectory left_intakeforward = drive.trajectoryBuilder(leftatintake.end())
-                .back(5.5, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-        Trajectory leftintakeback1 = drive.trajectoryBuilder(left_intakeforward.end())
+//        Trajectory left_intakeforward = drive.trajectoryBuilder(leftatintake.end())
+//                .back(5.5, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .build();
+        Trajectory leftintakeback1 = drive.trajectoryBuilder(lefttest.end())
                 .forward(7)
                 .build();
 
-        Trajectory lefttruss= drive.trajectoryBuilder(leftintakeback1.end())
-                .splineTo(new Vector2d(-29.48, -57), Math.toRadians(0.00))
-                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
-              //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
-                .build();
-        TrajectorySequence leftbackdrp= drive.trajectorySequenceBuilder(lefttruss.end())
-                .splineToConstantHeading(new Vector2d(21.44, -56.5), Math.toRadians(0.00))
-                .splineTo(new Vector2d(42.52, -25.25), Math.toRadians(0.00))
+        TrajectorySequence leftbackdrp= drive.trajectorySequenceBuilder(leftintakeback1.end())
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(45.6, -31.89), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
+
 
 //        Trajectory left_truss = drive.trajectoryBuilder(left_intakeforward.end())
 //                .splineTo(new Vector2d(-24.76, -15.86), Math.toRadians(0.00))
@@ -171,7 +176,7 @@ public class redaud50maybe extends LinearOpMode {
 //                .splineTo(new Vector2d(41.24, -34), Math.toRadians(0.00))
 //                .build();
         Trajectory deposit_left = drive.trajectoryBuilder(leftbackdrp.end())
-                .forward(6.7)
+                .forward(7)
                 .build();
         Trajectory away_left = drive.trajectoryBuilder(deposit_left.end())
                 .back(4.5)
@@ -184,7 +189,7 @@ public class redaud50maybe extends LinearOpMode {
 
 
         // hereeeeeeeeeeee
-        Trajectory backup_middle = drive.trajectoryBuilder(middle.end())
+        Trajectory backup_middle = drive.trajectoryBuilder(middletest.end())
                 .back(7.5)
                 .build();
         Trajectory middleatintake = drive.trajectoryBuilder(backup_middle.end())
@@ -195,25 +200,26 @@ public class redaud50maybe extends LinearOpMode {
                 .back(4.8, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        Trajectory middleintakeback1 = drive.trajectoryBuilder(middle_intakeforward.end())
+        Trajectory middleintakeback1 = drive.trajectoryBuilder(middletest.end())
                 .forward(7)
                 .build();
 
-        Trajectory middletruss= drive.trajectoryBuilder(middleintakeback1.end())
-                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
-                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
-                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
-                .build();
-        TrajectorySequence middlebackdrp= drive.trajectorySequenceBuilder(middletruss.end())
-                .splineToConstantHeading(new Vector2d(21.44, -55.5), Math.toRadians(0.00))
-                .splineTo(new Vector2d(42.52, -32.75), Math.toRadians(0.00))
+//        Trajectory middletruss= drive.trajectoryBuilder(middleintakeback1.end())
+//                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
+//                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+//                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
+//                .build();
+        TrajectorySequence middlebackdrp= drive.trajectorySequenceBuilder(middleintakeback1.end())
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(45.6, -34.25), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
 
 //
         Trajectory deposit_middle = drive.trajectoryBuilder(middlebackdrp.end())
-                .forward(7.55)
+                .forward(7.15)
                 .build();
         Trajectory away_middle = drive.trajectoryBuilder(deposit_middle.end())
                 .back(4.5)
@@ -222,27 +228,29 @@ public class redaud50maybe extends LinearOpMode {
         Trajectory backup_right = drive.trajectoryBuilder(right.end())
                 .back(7.5)
                 .build();
-
+//heree
         Trajectory rightatintake = drive.trajectoryBuilder(backup_right.end())
-                .lineToLinearHeading(new Pose2d(-55, -36.8, Math.toRadians(0.00)))
+
+                .lineToLinearHeading(new Pose2d(-54.31, -11.5, Math.toRadians(0.00)))
                 .build();
 
         Trajectory right_intakeforward = drive.trajectoryBuilder(rightatintake.end())
-                .back(4.825, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .back(4.95, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory rightintakeback1 = drive.trajectoryBuilder(right_intakeforward.end())
                 .forward(7)
                 .build();
 
-        Trajectory righttruss= drive.trajectoryBuilder(rightintakeback1.end())
-                .splineTo(new Vector2d(-29.48, -55.4), Math.toRadians(0.00))
-                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
-                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
-                .build();
-        TrajectorySequence rightbackdrp= drive.trajectorySequenceBuilder(righttruss.end())
-                .splineToConstantHeading(new Vector2d(21.44, -56.85), Math.toRadians(0.00))
-                .splineTo(new Vector2d(42.52, -37.5), Math.toRadians(0.00))
+//        Trajectory righttruss= drive.trajectoryBuilder(rightintakeback1.end())
+//
+//                //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
+//                //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
+//                .build();
+        TrajectorySequence rightbackdrp= drive.trajectorySequenceBuilder(rightintakeback1.end())
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00))
+                .splineTo(new Vector2d(45.6, -39.85), Math.toRadians(0.00))
                 //.splineToConstantHeading(new Vector2d(21.44, -57.9), Math.toRadians(0.00))
                 //  .splineTo(new Vector2d(42.52, -31.44), Math.toRadians(0.00))
                 .build();
@@ -250,19 +258,19 @@ public class redaud50maybe extends LinearOpMode {
 
 //
         Trajectory deposit_right = drive.trajectoryBuilder(rightbackdrp.end())
-                .forward(8.75)
+                .forward(6.45)
                 .build();
         Trajectory away_right = drive.trajectoryBuilder(deposit_right.end())
                 .back(4.5)
                 .build();
         TrajectorySequence rightundertruss = drive.trajectorySequenceBuilder(away_right.end())
                 .setTangent(Math.toRadians(180))
-                .splineTo(new Vector2d(12, -56.2), Math.PI)
-                .splineTo(new Vector2d(-30, -56.2), Math.toRadians(180))
-                .splineTo(new Vector2d(-54.5, -31.95), Math.toRadians(180))
+                .splineTo(new Vector2d(18, -12), Math.PI)
+                .splineTo(new Vector2d(-30, -12), Math.toRadians(180))
+                .splineTo(new Vector2d(-53, -11.45), Math.toRadians(180))
                 .build();
         Trajectory right_intakeforward3 = drive.trajectoryBuilder(rightundertruss.end())
-                .back(2.57, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .back(2.1, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory rightintakeback3 = drive.trajectoryBuilder(right_intakeforward3.end())
@@ -277,25 +285,24 @@ public class redaud50maybe extends LinearOpMode {
 //                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(30, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(19))
-                .splineTo(new Vector2d(-29.5, -53), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(17.33, -54), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(54.45, -45.54), Math.toRadians(25))
+                .splineTo(new Vector2d(51, -17), Math.toRadians(-23))
                 .build();
 //left_>////////////////////////
-
-        TrajectorySequence leftundertruss = drive.trajectorySequenceBuilder(away_right.end())
+        TrajectorySequence leftundertruss = drive.trajectorySequenceBuilder(away_left.end())
                 .setTangent(Math.toRadians(180))
-                .splineTo(new Vector2d(12, -56.2), Math.PI)
-                .splineTo(new Vector2d(-30, -56.2), Math.toRadians(180))
-                .splineTo(new Vector2d(-56.2, -44), Math.toRadians(135))
+                .splineTo(new Vector2d(18, -11), Math.PI)
+                .splineTo(new Vector2d(-30, -11), Math.toRadians(180))
+                .splineTo(new Vector2d(-54, -11.45), Math.toRadians(180))
                 .build();
-        Trajectory left_intakeforward3 = drive.trajectoryBuilder(leftundertruss.end())
-                .back(7.35, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+        Trajectory left_intakeforward3 = drive.trajectoryBuilder(rightundertruss.end())
+                .back(1.75, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        Trajectory leftintakeback3 = drive.trajectoryBuilder(left_intakeforward3.end())
+        Trajectory leftintakeback3 = drive.trajectoryBuilder(right_intakeforward3.end())
                 .forward(7)
                 .build();
 
@@ -307,26 +314,25 @@ public class redaud50maybe extends LinearOpMode {
 //                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(30, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(19))
-                .splineTo(new Vector2d(-29.5, -53), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(17.33, -54), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(54, -45.6), Math.toRadians(25))
+                .splineTo(new Vector2d(51.8, -28), Math.toRadians(-9))
                 .build();
+//left_>////////////////////////
 
-
-        TrajectorySequence middleundertruss = drive.trajectorySequenceBuilder(away_right.end())
+        TrajectorySequence middleundertruss = drive.trajectorySequenceBuilder(away_middle.end())
                 .setTangent(Math.toRadians(180))
-                .splineTo(new Vector2d(12, -56.2), Math.PI)
-                .splineTo(new Vector2d(-30, -56.2), Math.toRadians(180))
-                .splineTo(new Vector2d(-54.5, -31.95), Math.toRadians(180))
-
+                .splineTo(new Vector2d(18, -12), Math.PI)
+                .splineTo(new Vector2d(-30, -12), Math.toRadians(180))
+                .splineTo(new Vector2d(-54.5, -11.45), Math.toRadians(180))
                 .build();
         Trajectory middle_intakeforward3 = drive.trajectoryBuilder(middleundertruss.end())
-                .back(2.45, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .back(2.83, SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        Trajectory middleintakeback3 = drive.trajectoryBuilder(left_intakeforward3.end())
+        Trajectory middleintakeback3 = drive.trajectoryBuilder(right_intakeforward3.end())
                 .forward(7)
                 .build();
 
@@ -338,14 +344,12 @@ public class redaud50maybe extends LinearOpMode {
 //                .splineTo(new Vector2d(-29.48, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(30, -56), Math.toRadians(0.00))
 //                .splineTo(new Vector2d(42.52, -36.5), Math.toRadians(19))
-                .splineTo(new Vector2d(-29.5, -53), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(-12, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(17.33, -54), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineTo(new Vector2d(18, -11), Math.toRadians(0.00),SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(53.95, -45.6), Math.toRadians(25))
+                .splineTo(new Vector2d(52.15, -23), Math.toRadians(-12))
                 .build();
-
-
         waitForStart();
         if (isStopRequested()) return;
         redAudiencePipeline.Location location = detector.getLocation();
@@ -362,20 +366,13 @@ public class redaud50maybe extends LinearOpMode {
 
                         case 0:
                             pos = Lift.LiftPos.START;
-                            drive.followTrajectory(left);
-                            drive.followTrajectory(backup_left);
-                            drive.followTrajectoryAsync(leftatintake);
+                            drive.followTrajectorySequenceAsync(lefttest);
+//                            drive.followTrajectory(backup_left);
+//                            drive.followTrajectoryAsync(leftatintake);
                             intake.intakewhile5();
                             //  arm.drop.setPosition(.63)
                             waitTimer1.reset();
-                            state = 1;
-                            break;
-                        case 1:
-                            if (!drive.isBusy()) {
-                                drive.followTrajectory(left_intakeforward);
-                                waitTimer1.reset();
-                                state = 10;
-                            }
+                            state = 10;
                             break;
                         case 10:
                             if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
@@ -394,7 +391,7 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy()) {
                                 intake.stopintake();
                                 arm.drop.setPosition(.585);
-                                drive.followTrajectoryAsync(lefttruss);
+                                drive.followTrajectorySequenceAsync(leftbackdrp);
                                 arm.raxon.setPosition(.784);
                                 arm.laxon.setPosition(.216);
                                 arm.bendwrist.setPosition(.152);
@@ -406,7 +403,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
                         case 3:
                             if (waitTimer2.seconds() >= waitTime2) {
-                            arm.grab();
+                                arm.grab();
 
                                 waitTimer3.reset();
                                 state = 4;
@@ -414,7 +411,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
 
                         case 4:
-                            if (!drive.isBusy() && waitTimer3.seconds() >= waitTime3) {
+                            if (waitTimer3.seconds() >= waitTime3) {
 
                                 arm.aftergrab();
 
@@ -426,7 +423,7 @@ public class redaud50maybe extends LinearOpMode {
                             if (waitTimer4.seconds() >= waitTime4) {
 
                                 arm.bendwrist.setPosition(.148);
-                                drive.followTrajectorySequenceAsync(leftbackdrp);
+
 
                                 waitTimer10.reset();
                                 state = 6;
@@ -438,7 +435,7 @@ public class redaud50maybe extends LinearOpMode {
                                 pos = Lift.LiftPos.LOW_AUTOAUD;
 
 
-                            waitTimer4.reset();
+                                waitTimer4.reset();
                                 state = 7;
                             }
                             break;
@@ -463,7 +460,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
                         case 9:
                             if (!drive.isBusy()) {
-                               drive.followTrajectory(deposit_left);
+                                drive.followTrajectory(deposit_left);
                                 arm.release();
                                 drive.followTrajectory(away_left);
                                 arm.intakePosafterscore();
@@ -609,29 +606,22 @@ public class redaud50maybe extends LinearOpMode {
 
                         case 0:
                             pos = Lift.LiftPos.START;
-                            drive.followTrajectory(middle);
-                            drive.followTrajectory(backup_middle);
-                            drive.followTrajectoryAsync(middleatintake);
+                           // drive.followTrajectory(middle);
+                            drive.followTrajectorySequenceAsync(middletest);
+                           // drive.followTrajectory(backup_middle);
+                           // drive.followTrajectoryAsync(middleatintake);
                             intake.intakewhile5();
                             //  arm.drop.setPosition(.63)
                             waitTimer1.reset();
-                            state1 = 1;
+                            state1 = 10;
                             break;
-                        case 1:
-                            if (!drive.isBusy() ) {
-                                drive.followTrajectory(middle_intakeforward);
 
-                                waitTimer1.reset();
-                                state1 = 10;
-                            }
-                            break;
                         case 10:
                             if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
 
-                                intake.outtake(.3);
+                                intake.outtake(.36);
 //                                intake.intake3(.7);
 //                                intake.outtake2ndaud();
-                                drive.followTrajectoryAsync(middleintakeback1);
                                 arm.release();
                                 arm.flapsup();
 
@@ -642,7 +632,7 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy()) {
                                 intake.stopintake();
                                 arm.drop.setPosition(.59);
-                                drive.followTrajectoryAsync(middletruss);
+                                drive.followTrajectorySequenceAsync(middlebackdrp);
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
@@ -662,7 +652,7 @@ public class redaud50maybe extends LinearOpMode {
                             break;
 
                         case 4:
-                            if (!drive.isBusy() && waitTimer3.seconds() >= waitTime3) {
+                            if (waitTimer3.seconds() >= waitTime3) {
 
                                 arm.aftergrab();
 
@@ -674,7 +664,7 @@ public class redaud50maybe extends LinearOpMode {
                             if (waitTimer4.seconds() >= waitTime4) {
 
                                 arm.bendwrist.setPosition(.148);
-                                drive.followTrajectorySequenceAsync(middlebackdrp);
+
 
                                 waitTimer10.reset();
                                 state1 = 6;
@@ -748,7 +738,7 @@ public class redaud50maybe extends LinearOpMode {
                         case 17:
                             if (waitTimer10.seconds() >= waitTime10) {
                                 intake.outtake(.25);
-                                intake.intake3(.885);
+                                intake.intake3(.5);
                                 intake.outtake2nd(.45);
                                 drive.followTrajectoryAsync(middleintakeback3);
                                 arm.lflap.setPosition(LFLAPUP);
@@ -865,8 +855,6 @@ public class redaud50maybe extends LinearOpMode {
 
                 }
 
-
-
                 break;
             case  NOT_FOUND: //middle
                 int state2 = 0; ///middle
@@ -882,19 +870,19 @@ public class redaud50maybe extends LinearOpMode {
                             drive.followTrajectoryAsync(rightatintake);
                             intake.intakewhile5();
                             //  arm.drop.setPosition(.63)
-                            waitTimer1.reset();
+                            waitTimerintake1.reset();
                             state2 = 1;
                             break;
                         case 1:
                             if (!drive.isBusy() ) {
                                 drive.followTrajectory(right_intakeforward);
 
-                                waitTimer1.reset();
+                                waitTimerintake1.reset();
                                 state2 = 10;
                             }
                             break;
                         case 10:
-                            if (!drive.isBusy() && waitTimer1.seconds() >= waitTime1) {
+                            if (!drive.isBusy() && waitTimerintake1.seconds() >= waitTimeintake1) {
 
                                 intake.outtake(.3);
 //                                intake.intake3(.7);
@@ -910,7 +898,7 @@ public class redaud50maybe extends LinearOpMode {
                             if (!drive.isBusy()) {
                                 intake.stopintake();
                                 arm.drop.setPosition(.59);
-                                drive.followTrajectoryAsync(righttruss);
+                                drive.followTrajectorySequenceAsync(rightbackdrp);
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.1655);
@@ -939,10 +927,10 @@ public class redaud50maybe extends LinearOpMode {
                             }
                             break;
                         case 5:
-                            if (!drive.isBusy() && waitTimer4.seconds() >= waitTime4) {
+                            if (waitTimer4.seconds() >= waitTime4) {
 
                                 arm.bendwrist.setPosition(.148);
-                                drive.followTrajectorySequenceAsync(rightbackdrp);
+                                //drive.followTrajectorySequenceAsync(rightbackdrp);
 
                                 waitTimer10.reset();
                                 state2 = 6;
