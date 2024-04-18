@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import Hardware.Intake;
+import team.spicyketchup.subsystem.Intake;
 
 public class Robot implements Subsystem {
 
