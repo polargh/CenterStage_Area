@@ -399,7 +399,7 @@ public class apriltagdropredkyleauto extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.25);
                                 intake.intake5(.6);
                                 drive.followTrajectoryAsync(middle_intakebackward);
@@ -676,7 +676,7 @@ public class apriltagdropredkyleauto extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.15);
                                 intake.intake5(.6);
                                 drive.followTrajectoryAsync(left_intakebackward);

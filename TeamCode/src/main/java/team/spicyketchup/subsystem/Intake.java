@@ -72,7 +72,7 @@ public class Intake {
         setIntakePower(1);
     }
 
-    public void stopintake() {
+    public void stopIntake() {
         drop.setPosition(.82);
         setIntakePower(0);
     }
@@ -88,6 +88,10 @@ public class Intake {
 
         setIntakePower(0);
         runtime.reset();
+    }
+
+    public void outtake() {
+        drop.setPosition(.6);
     }
 
     public void outtake2nd(double sec) {
@@ -122,7 +126,7 @@ public class Intake {
     * @param power The power you want to set
     * @author polar
     */
-    private void setIntakePower(double power) {
+    public void setIntakePower(double power) {
         if (power != lastPower) {
             intake.setPower(power);
         }

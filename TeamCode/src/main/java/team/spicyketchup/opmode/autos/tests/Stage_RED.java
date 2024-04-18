@@ -215,7 +215,7 @@ public class Stage_RED extends LinearOpMode {
                 drive.followTrajectory(right_intakee);
                 drive.followTrajectory(right_straight);
                 sleep(400);
-                intake.stopintake();
+                intake.stopIntake();
                 grab();
 
                // setIntake();

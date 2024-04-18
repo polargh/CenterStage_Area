@@ -345,14 +345,14 @@ int state1 = 0; ///middle
 //                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(middleintakeback1);
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state1 = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.59);
                                 drive.followTrajectoryAsync(middletruss);
                                 arm.raxon.setPosition(.783);
@@ -610,14 +610,14 @@ int state1 = 0; ///middle
 //                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(rightintakeback1);
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state2 = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.59);
                                 drive.followTrajectoryAsync(righttruss);
                                 arm.raxon.setPosition(.783);
@@ -863,14 +863,14 @@ int state1 = 0; ///middle
 //                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(leftintakeback1);
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.585);
                                 drive.followTrajectoryAsync(lefttruss);
                                 arm.raxon.setPosition(.784);

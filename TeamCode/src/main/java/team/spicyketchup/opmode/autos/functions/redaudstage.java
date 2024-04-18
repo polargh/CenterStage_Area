@@ -382,14 +382,14 @@ public class redaudstage extends LinearOpMode {
 //                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(leftintakeback1);
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.585);
                                 drive.followTrajectorySequenceAsync(leftbackdrp);
                                 arm.raxon.setPosition(.784);
@@ -623,14 +623,14 @@ public class redaudstage extends LinearOpMode {
 //                                intake.intake3(.7);
 //                                intake.outtake2ndaud();
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state1 = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.59);
                                 drive.followTrajectorySequenceAsync(middlebackdrp);
                                 arm.raxon.setPosition(.783);
@@ -889,14 +889,14 @@ public class redaudstage extends LinearOpMode {
 //                                intake.outtake2ndaud();
                                 drive.followTrajectoryAsync(rightintakeback1);
                                 arm.release();
-                                arm.flapsup();
+                                arm.flapsUp();
 
                                 state2 = 2;
                             }
                             break;
                         case 2:
                             if (!drive.isBusy()) {
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.drop.setPosition(.59);
                                 drive.followTrajectorySequenceAsync(rightbackdrp);
                                 arm.raxon.setPosition(.783);

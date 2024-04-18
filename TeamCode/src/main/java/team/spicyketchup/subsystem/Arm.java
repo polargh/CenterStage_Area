@@ -126,7 +126,7 @@ public class Arm {
         frontclaw.setPosition(FRONTRELEASE);
         drop.setPosition(.55);
     }
-    public void flapsup(){ //almost grab
+    public void flapsUp(){ //almost grab
         lflap.setPosition(LFLAPUP);
         rflap.setPosition(RFLAPUP);
         rearclaw.setPosition(REARRELEASE);

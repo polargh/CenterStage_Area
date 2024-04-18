@@ -468,14 +468,14 @@ public class Red24TrussBackstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.25);
                                 intake.intake5(.6);
                                 intake.outtake2nd(.3);
                                 intake.outtake2ndon();
                                 arm.drop.setPosition(.94);
                                 drive.followTrajectoryAsync(middle_intakebackward);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.release();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
@@ -579,7 +579,7 @@ public class Red24TrussBackstage extends LinearOpMode {
                                 intake.outtake2ndon();
                                 arm.drop.setPosition(.951);
                                 drive.followTrajectorySequenceAsync(middle_intakebackward4);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
                                 arm.release();
@@ -752,14 +752,14 @@ public class Red24TrussBackstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.15);
                                 intake.intake5(.6);
                                 arm.drop.setPosition(.945);
 
                                 intake.outtake2ndon();
                                 drive.followTrajectoryAsync(left_intakebackward);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.release();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
@@ -1033,7 +1033,7 @@ public class Red24TrussBackstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.25);
                                 intake.intake3(.6);
                                 drive.followTrajectoryAsync(right_intakebackward);

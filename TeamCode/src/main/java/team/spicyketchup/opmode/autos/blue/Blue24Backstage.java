@@ -463,14 +463,14 @@ public class Blue24Backstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.25);
                                 intake.intake5(.7);
                                 intake.outtake(.25);
                                 intake.outtake2ndon();
                                 arm.drop.setPosition(.94);
                                 drive.followTrajectory(middle_intakebackward);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.release();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
@@ -486,7 +486,7 @@ public class Blue24Backstage extends LinearOpMode {
                                 arm.bendwrist.setPosition(.159);
                                 intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(middle_backstage2drop);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 waitTimer2.reset();
                                 state = 9;
                             }
@@ -576,7 +576,7 @@ public class Blue24Backstage extends LinearOpMode {
                                 intake.outtake(.25);
                                 arm.drop.setPosition(.82);
                                 drive.followTrajectorySequence(middle_intakebackward4);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
                                 arm.release();
@@ -749,14 +749,14 @@ public class Blue24Backstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.29);
                                 intake.intake5(.71);
                                 arm.drop.setPosition(.945);
 
                                 intake.outtake2ndon();
                                 drive.followTrajectoryAsync(left_intakebackward);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.release();
                                 arm.lflap.setPosition(LFLAPUP);
                                 arm.rflap.setPosition(RFLAPUP);
@@ -871,7 +871,7 @@ public class Blue24Backstage extends LinearOpMode {
                             if (!drive.isBusy() && waitTimer8.seconds() >= waitTime8) {
                                 intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(left_backstage4drop);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 arm.raxon.setPosition(.783);
                                 arm.laxon.setPosition(.217);
                                 arm.bendwrist.setPosition(.159);
@@ -1031,7 +1031,7 @@ public class Blue24Backstage extends LinearOpMode {
                         case 7:
                             if (waitTimer1.seconds()>= waitTime1) {
 
-                                intake.stopintake();
+                                intake.stopIntake();
                                 intake.outtake(.25);
                                 intake.intake3(.6);
                                 drive.followTrajectoryAsync(right_intakebackward);
@@ -1051,7 +1051,7 @@ public class Blue24Backstage extends LinearOpMode {
                                 arm.bendwrist.setPosition(.159);
                                 intake.outtake2ndon();
                                 drive.followTrajectorySequenceAsync(right_backstage2drop);
-                                intake.stopintake();
+                                intake.stopIntake();
                                 waitTimer2.reset();
                                 rstate = 9;
                             }

@@ -5,7 +5,7 @@ import team.spicyketchup.subsystem.Intake;
 public class IntakeCommands{
 Intake intake;
     public void IntakeCycle1() {
-    intake.stopintake();
+    intake.stopIntake();
     intake.outtake(.25);
     intake.intake5(.6);
     intake.outtake2nd(.3);

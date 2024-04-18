@@ -18,7 +18,7 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-35.5, 60, Math.toRadians(-90)))
                                 // go to purple pixel deposit
-                                .splineTo(new Vector2d(-30, 35), Math.toRadians(0))
+                                .splineTo(new Vector2d(-44, 36), Math.toRadians(180))
                                 // go to stack
                                 .lineToLinearHeading(new Pose2d(-60, 35, Math.toRadians(0)))
                                 .waitSeconds(1)
