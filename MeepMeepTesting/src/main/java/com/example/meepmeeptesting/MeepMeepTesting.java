@@ -18,29 +18,42 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-35.5, 60, Math.toRadians(-90)))
                                 // go to purple pixel deposit
-                                .splineTo(new Vector2d(-44, 36), Math.toRadians(180))
+                                .splineTo(new Vector2d(-35, 35), Math.toRadians(0))
+                                .addTemporalMarker(1, () -> {
+                                    // todo
+                                })
                                 // go to stack
                                 .lineToLinearHeading(new Pose2d(-60, 35, Math.toRadians(0)))
-                                .waitSeconds(1)
+                                .addTemporalMarker(2.8, () -> {
+                                    // todo
+                                })
                                 .forward(15)
                                 // go to depositing position
                                 .splineTo(new Vector2d(-30.01, 58.96), Math.toRadians(0.00))
                                 .lineTo(new Vector2d(24.30, 59.49))
                                 .splineTo(new Vector2d(50, 35), Math.toRadians(0.00))
-                                .waitSeconds(1.5)
+                                .addTemporalMarker(8.3, () -> {
+                                    // todo
+                                })
                                 // return
                                 .back(5)
                                 .splineTo(new Vector2d(23.94, 58.96), Math.toRadians(180.00))
                                 .splineTo(new Vector2d(-45.20, 51.63), Math.toRadians(200))
                                 .splineTo(new Vector2d(-60, 35), Math.toRadians(180.00))
-                                .waitSeconds(1.5)
+                                .addTemporalMarker(12.7, () -> {
+                                    // todo
+                                })
                                 // return to deposit
-                                .splineTo(new Vector2d(-30.01, 58.96), Math.toRadians(0.00))
-                                .lineTo(new Vector2d(24.30, 59.49))
+                                .forward(5)
+                                .splineTo(new Vector2d(-48, 59.58), Math.toRadians(0))
+                                .lineTo(new Vector2d(16.02, 58.68))
                                 .splineTo(new Vector2d(50, 35), Math.toRadians(0.00))
-                                .waitSeconds(1.5)
+                                .addTemporalMarker(18, () -> {
+                                    // todo
+                                })
                                 // park
                                 .strafeLeft(24)
+                                .addTemporalMarker(19.3, () -> {})
                                 .build()
                 );
 
